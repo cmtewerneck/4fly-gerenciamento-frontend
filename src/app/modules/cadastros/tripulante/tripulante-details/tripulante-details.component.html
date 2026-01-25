@@ -1,0 +1,192 @@
+<div class="flex w-full flex-auto flex-col">
+    <div class="mx-auto flex w-full max-w-screen-xl flex-wrap p-6 md:p-8">
+        <!-- Title and action buttons -->
+        <div class="flex w-full items-center justify-between">
+            <div>
+                <h2 class="text-3xl font-semibold leading-8 tracking-tight">
+                    Tripulante: {{ tripulante.nome }}
+                </h2>
+            </div>
+            <div class="ml-6 flex items-center">
+                <button class="hidden sm:inline-flex" mat-stroked-button (click)="voltar()">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:arrow-left'"></mat-icon>
+                    <span class="ml-2">Voltar</span>
+                </button>
+                <button class="ml-3 hidden sm:inline-flex" mat-stroked-button (click)="edit()">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
+                    <span class="ml-2">Editar</span>
+                </button>
+                <button class="ml-3 hidden sm:inline-flex" mat-flat-button [color]="'primary'">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:arrow-up-tray'"></mat-icon>
+                    <span class="ml-2">Exportar em PDF</span>
+                </button>
+                
+                <!-- Actions menu (visible on xs) -->
+                <div class="sm:hidden">
+                    <button [matMenuTriggerFor]="actionsMenu" mat-icon-button>
+                        <mat-icon [svgIcon]="'heroicons_mini:ellipsis-vertical'"></mat-icon>
+                    </button>
+                    <mat-menu #actionsMenu="matMenu">
+                        <button mat-menu-item (click)="voltar()">Voltar</button>
+                        <button mat-menu-item (click)="edit()">Editar</button>
+                        <button mat-menu-item>Exportar para PDF</button>
+                    </mat-menu>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-8 grid w-full grid-cols-1 gap-8 xl:grid-cols-2">
+            <div class="grid gap-8 sm:grid-flow-col xl:grid-flow-row">
+                <!-- Dados do tripulante -->
+                <div class="bg-card relative flex flex-auto flex-col overflow-hidden rounded-2xl p-6 pb-3 pr-3 shadow">
+                    <div class="absolute bottom-0 right-0 -m-6 h-24 w-24">
+                        <mat-icon class="text-green-500 opacity-25 icon-size-24 dark:text-green-400" [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex flex-col">
+                            <div class="truncate text-lg font-medium leading-6 tracking-tight">
+                                Dados do tripulante
+                            </div>
+                            <div class="text-sm font-medium text-green-600">
+                                informações abaixo
+                            </div>
+                        </div>
+                    </div>
+                    <div class="-mx-6 mt-4 flex flex-row flex-wrap">
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                CANAC
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ tripulante.canac }}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                CPF
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ tripulante.cpf }}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Telefone
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                @if(tripulante.telefone != null && tripulante.telefone != ''){
+                                    {{ tripulante.telefone}}
+                                }@else{--}
+                            </div>
+                        </div>  
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Salário
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                 @if(tripulante.salario != null){
+                                    R$ {{ tripulante.salario}},00
+                                }@else{--}
+                            </div>
+                        </div>                         
+                    </div>
+                </div>
+                <!-- Datas -->
+                <div class="bg-card relative flex flex-auto flex-col overflow-hidden rounded-2xl p-6 pb-3 pr-3 shadow">
+                    <div class="absolute bottom-0 right-0 -m-6 h-24 w-24">
+                        <mat-icon class="text-blue-500 opacity-25 icon-size-24 dark:text-blue-400" [svgIcon]="'heroicons_outline:exclamation-circle'"></mat-icon>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex flex-col">
+                            <div class="truncate text-lg font-medium leading-6 tracking-tight">
+                                Validades de habilitações
+                            </div>
+                            <div class="text-sm font-medium text-green-600">
+                                segue informações
+                            </div>
+                        </div>
+                    </div>
+                    <div class="-mx-6 mt-4 flex flex-row flex-wrap">
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                HMNC
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                @if(tripulante.validadeHmnc != null){
+                                    {{ tripulante.validadeHmnc | date:'dd/MM/yyyy'}}
+                                }@else{--}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                               HMNT
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                @if(tripulante.validadeHmnt != null){
+                                    {{ tripulante.validadeHmnt | date:'dd/MM/yyyy'}}
+                                }@else{--}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                               HMLT
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                @if(tripulante.validadeHmlt != null){
+                                    {{ tripulante.validadeHmlt | date:'dd/MM/yyyy'}}
+                                }@else{--}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                               IFRH
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                @if(tripulante.validadeIfrh != null){
+                                    {{ tripulante.validadeIfrh | date:'dd/MM/yyyy'}}
+                                }@else{--}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                               INVH
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                @if(tripulante.validadeInvh != null){
+                                    {{ tripulante.validadeInvh | date:'dd/MM/yyyy'}}
+                                }@else{--}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                               CMA
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                @if(tripulante.validadeCma != null){
+                                    {{ tripulante.validadeCma | date:'dd/MM/yyyy'}}
+                                }@else{--}
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+            <!-- Foto -->
+            <div class="bg-card flex flex-auto flex-col overflow-hidden rounded-2xl shadow">
+                <div class="flex flex-col p-6 pb-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-col">
+                            <div class="mr-4 truncate text-lg font-medium leading-6 tracking-tight">
+                                Foto do tripulante
+                            </div>
+                        </div>
+                    </div>
+                    @if(tripulante.imagem != null && tripulante.imagem != ''){
+                        <div class="mr-2 mt-6 flex items-start">
+                            <img src="{{ imagens }}{{ tripulante.imagem }}">
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

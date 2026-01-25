@@ -1,0 +1,118 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+
+    <!-- Header -->
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+
+        <!-- Loader -->
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+
+        <!-- Title -->
+        <div class="text-4xl font-extrabold tracking-tight">
+            Editar Colaborador
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <button class="ml-4" mat-flat-button [color]="'primary'" [routerLink]="['/colaboradores']">
+                <span class="ml-2 mr-1">Cancelar</span>
+            </button>
+            <button class="ml-4" mat-flat-button [color]="'primary'" (click)="save()">
+                <span class="ml-2 mr-1">Salvar</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+
+    <form [formGroup]="mainForm" class="flex flex-col overflow-y-scroll overflow-x-hidden p-8">
+        <div class="flex flex-row">
+            <mat-form-field class="flex-1">
+                <mat-label>Nome</mat-label>
+                <input matInput formControlName="nome">
+                <mat-error *ngIf="this.mainForm.get('nome').invalid">Informe o nome</mat-error>
+            </mat-form-field>
+    
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>CPF</mat-label>
+                <input matInput formControlName="cpf" maxlength="11">
+                <mat-error *ngIf="this.mainForm.get('cpf').invalid">Informe o CPF</mat-error>
+            </mat-form-field>
+    
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Telefone</mat-label>
+                <input matInput formControlName="telefone" maxlength="11">
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Cargo</mat-label>
+                <input matInput formControlName="cargo">
+                <mat-error *ngIf="this.mainForm.get('cargo').invalid">Informe o cargo</mat-error>
+            </mat-form-field>
+        </div>
+    
+        <div class="flex flex-row">
+            <mat-form-field class="flex-1">
+                <mat-label>Data de Admissão</mat-label>
+                <input matInput formControlName="admissao" type="date">
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Data de Demissão</mat-label>
+                <input matInput formControlName="demissao" type="date">
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Salário</mat-label>
+                <input matInput formControlName="salario">
+            </mat-form-field>
+        </div>
+
+        <div class="flex flex-row">
+            <mat-form-field class="flex-1">
+                <mat-label>Validade Familiarização SGSO</mat-label>
+                <input matInput formControlName="validadeFamiliarizacaoSGSO" type="date">
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Validade Conscientização AVSEC</mat-label>
+                <input matInput formControlName="validadeConscientizacaoAvsec" type="date">
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Validade DDA</mat-label>
+                <input matInput formControlName="validadeDDA" type="date">
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Validade APAM</mat-label>
+                <input matInput formControlName="validadeApam" type="date">
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Validade Credencial</mat-label>
+                <input matInput formControlName="validadeCredencial" type="date">
+            </mat-form-field>
+        </div>
+
+        <div class="flex flex-row">
+            <!-- UPLOAD IMAGEM -->
+            <div class="col-lg-6">
+                <div class="custom-file">
+                    <input type="file" accept="image/jpeg,image/png,image/jpg" class="custom-file-input" (change)="fileChangeEvent($event)">
+                    <label data-browse="Procurar" style="width: 400px" class="custom-file-label"></label>
+                    <div *ngIf='imagemNome' style="text-align: left;"><br><strong>Arquivo selecionado:</strong> {{ imagemNome }} <br></div>
+                </div>
+                <div style="margin-top: 50px;">
+                     <button class="ml-4" mat-stroked-button (click)="removerFoto()">
+                        <span class="ml-2 mr-1">Remover Foto</span>
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+    </form>
+
+</div>
