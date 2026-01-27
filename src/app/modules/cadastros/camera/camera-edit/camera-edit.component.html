@@ -1,0 +1,115 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+
+    <!-- Header -->
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+
+        <!-- Loader -->
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+
+        <!-- Title -->
+        <div class="text-4xl font-extrabold tracking-tight">
+            Nova venda
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <button class="ml-4" mat-flat-button [color]="'primary'" [routerLink]="['/cameras']">
+                <span class="ml-2 mr-1">Cancelar</span>
+            </button>
+            <button class="ml-4" mat-flat-button [color]="'primary'" (click)="save()">
+                <span class="ml-2 mr-1">Salvar</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+
+    <form [formGroup]="mainForm" class="flex flex-col overflow-y-scroll overflow-x-hidden p-8">
+        <div class="flex flex-row">
+            <mat-form-field class="flex-1">
+                <mat-label>Data</mat-label>
+                <input matInput formControlName="dataVenda" type="date">
+                <mat-error *ngIf="this.mainForm.get('dataVenda').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+    
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Hora</mat-label>
+                <input matInput formControlName="horaVoo">
+                <mat-error *ngIf="this.mainForm.get('horaVoo').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Passageiro</mat-label>
+                <input matInput formControlName="nomePassageiro">
+                <mat-error *ngIf="this.mainForm.get('nomePassageiro').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Telefone</mat-label>
+                <input matInput formControlName="telefonePassageiro">
+            </mat-form-field>
+        </div>
+        
+        <div class="flex flex-row">
+            <mat-form-field class="flex-1">
+                <mat-label>Referência</mat-label>
+                <input matInput formControlName="referencia">
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Aeronave</mat-label>
+                <input matInput formControlName="aeronave">
+                <mat-error *ngIf="this.mainForm.get('aeronave').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Vendedor</mat-label>
+                <input matInput formControlName="vendedor">
+                <mat-error *ngIf="this.mainForm.get('vendedor').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+
+             <mat-form-field class="flex-1 ml-2">
+                <mat-label>Valor Bruto (R$)</mat-label>
+                <input matInput formControlName="valorBruto">
+                <mat-error *ngIf="this.mainForm.get('valorBruto').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Valor Líquido (R$)</mat-label>
+                <input matInput formControlName="valorLiquido">
+                <mat-error *ngIf="this.mainForm.get('valorLiquido').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="flex flex-row">
+            <mat-form-field class="flex-1">
+                <mat-label>Status</mat-label>
+                <input matInput formControlName="status">
+                <mat-error *ngIf="this.mainForm.get('status').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Link Youtube</mat-label>
+                <input matInput formControlName="linkYoutube">
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Link WeTransfer</mat-label>
+                <input matInput formControlName="linkWeTransfer">
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Privacidade</mat-label>
+                <input matInput formControlName="privacidade">
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Observações</mat-label>
+                <input matInput formControlName="observacoes">
+            </mat-form-field>
+        </div>
+    </form>
+</div>

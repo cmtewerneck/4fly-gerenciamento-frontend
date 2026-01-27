@@ -27,8 +27,47 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id: 'tripulantes',
                 title: 'Tripulantes',
                 type: 'basic',
-                icon: 'heroicons_outline:user-group',
+                icon: 'heroicons_outline:user-plus',
                 link: '/tripulantes',
+            },
+            {
+                id: 'cameras',
+                title: 'Câmeras',
+                type: 'basic',
+                icon: 'heroicons_outline:camera',
+                link: '/cameras',
+            },
+            {
+                id: 'configuracoes',
+                title: 'Configurações',
+                type: 'collapsable',
+                icon: 'heroicons_outline:cog-8-tooth',
+                children: [
+                    {
+                        id: 'tempoVoo',
+                        title: 'Tempos de voo',
+                        type: 'basic',
+                        link: '/tempos-de-voo',
+                    },
+                    {
+                        id: 'vendedores',
+                        title: 'Vendedores',
+                        type: 'basic',
+                        link: '/vendedores',
+                    },
+                    {
+                        id: 'precos',
+                        title: 'Preços',
+                        type: 'basic',
+                        link: '/precos',
+                    },
+                    {
+                        id: 'operadores',
+                        title: 'Operadores',
+                        type: 'basic',
+                        link: '/operadores',
+                    }
+                ],
             }
         ]
     }

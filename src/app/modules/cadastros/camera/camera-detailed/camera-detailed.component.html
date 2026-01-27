@@ -1,0 +1,172 @@
+<div class="flex w-full flex-auto flex-col">
+    <div class="mx-auto flex w-full max-w-screen-xl flex-wrap p-6 md:p-8">
+        <!-- Title and action buttons -->
+        <div class="flex w-full items-center justify-between">
+            <div>
+                <h2 class="text-3xl font-semibold leading-8 tracking-tight">
+                    Data da venda: {{camera.dataVenda | date:'dd/MM/yyyy' }}
+                </h2>
+            </div>
+            <div class="ml-6 flex items-center">
+                <button class="hidden sm:inline-flex" mat-stroked-button (click)="voltar()">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:arrow-left'"></mat-icon>
+                    <span class="ml-2">Voltar</span>
+                </button>
+                <button class="ml-3 hidden sm:inline-flex" mat-stroked-button (click)="edit()">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
+                    <span class="ml-2">Editar</span>
+                </button>
+                <button class="ml-3 hidden sm:inline-flex" mat-stroked-button (click)="deletar()">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                    <span class="ml-2">Excluir</span>
+                </button>
+                <button class="ml-3 hidden sm:inline-flex" mat-flat-button [color]="'primary'">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:arrow-up-tray'"></mat-icon>
+                    <span class="ml-2">Exportar em PDF</span>
+                </button>
+                
+                <!-- Actions menu (visible on xs) -->
+                <div class="sm:hidden">
+                    <button [matMenuTriggerFor]="actionsMenu" mat-icon-button>
+                        <mat-icon [svgIcon]="'heroicons_mini:ellipsis-vertical'"></mat-icon>
+                    </button>
+                    <mat-menu #actionsMenu="matMenu">
+                        <button mat-menu-item>Exportar para PDF</button>
+                        <button mat-menu-item (click)="voltar()">Voltar</button>
+                    </mat-menu>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-8 grid w-full grid-cols-1 gap-8 xl:grid-cols-1">
+            <div class="grid gap-8 sm:grid-flow-col xl:grid-flow-row">
+                <!-- Dados da venda -->
+                <div class="bg-card relative flex flex-auto flex-col overflow-hidden rounded-2xl p-6 pb-3 pr-3 shadow">
+                    <div class="flex items-center">
+                        <div class="flex flex-col">
+                            <div class="truncate text-lg font-medium leading-6 tracking-tight">
+                                Dados da venda
+                            </div>
+                            <div class="text-sm font-medium text-green-600">
+                                informações abaixo
+                            </div>
+                        </div>
+                    </div>
+                    <div class="-mx-6 mt-4 flex flex-row flex-wrap">
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Passageiro
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ camera.nomePassageiro }}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Horário
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ camera.horaVoo }}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Telefone
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ camera.telefonePassageiro }}
+                            </div>
+                        </div>                        
+                                               
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Aeronave
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ camera.aeronave }}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Vendedor
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ camera.vendedor }}
+                            </div>
+                        </div>   
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Privacidade
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ camera.privacidade }}
+                            </div>
+                        </div>                        
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Valor Bruto
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                R$ {{ camera.valorBruto }}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Valor Líquido
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                R$ {{ camera.valorLiquido }}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Status
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ camera.status }}
+                            </div>
+                        </div>                     
+                    </div>
+
+                    <div class="-mx-6 mt-4 flex flex-row flex-wrap">
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Referência
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ camera.referencia }}
+                            </div>
+                        </div> 
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Observações
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ camera.observacoes }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="-mx-6 mt-4 flex flex-row flex-wrap">
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Link Youtube
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ camera.linkYoutube }}
+                            </div>
+                        </div>
+                        <div class="mx-6 my-3 flex flex-col">
+                            <div class="text-secondary text-sm font-medium leading-none">
+                                Link WeTransfer
+                            </div>
+                            <div class="mt-2 text-3xl font-medium leading-none">
+                                {{ camera.linkWeTransfer }}
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

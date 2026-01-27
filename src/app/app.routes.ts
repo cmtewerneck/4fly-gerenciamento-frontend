@@ -90,6 +90,7 @@ export const appRoutes: Route[] = [
             {path: 'aeronaves', loadChildren: () => import('app/modules/cadastros/aeronave/aeronave.routes')},
             {path: 'colaboradores', loadChildren: () => import('app/modules/cadastros/colaboradores/colaboradores.routes')},
             {path: 'tripulantes', loadChildren: () => import('app/modules/cadastros/tripulante/tripulantes.routes')},
+            {path: 'cameras', loadChildren: () => import('app/modules/cadastros/camera/cameras.routes')},
 
             // Apps
             {path: 'apps', children: [
