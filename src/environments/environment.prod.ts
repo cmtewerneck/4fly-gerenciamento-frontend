@@ -1,12 +1,12 @@
-export const environment = {
-    production: true,
-    apiUrl: 'https://localhost:44302',
-    imagensUrl: 'https://localhost:44302/images/'
-};
-
 // export const environment = {
-//     production: false,
-//     apiUrl: 'https://4flyrjapp-ezd2gdbfa6eze7h2.brazilsouth-01.azurewebsites.net',
-//     imagensUrl: 'https://4flyrjapp-ezd2gdbfa6eze7h2.brazilsouth-01.azurewebsites.net/images/',
-//     filesurl: 'https://4flyrjapp-ezd2gdbfa6eze7h2.brazilsouth-01.azurewebsites.net/files/'
+//     production: true,
+//     apiUrl: 'https://localhost:44302',
+//     imagensUrl: 'https://localhost:44302/images/'
 // };
+
+export const environment = {
+    production: false,
+    apiUrl: 'https://4flyrjapp-ezd2gdbfa6eze7h2.brazilsouth-01.azurewebsites.net',
+    imagensUrl: 'https://4flyrjapp-ezd2gdbfa6eze7h2.brazilsouth-01.azurewebsites.net/images/',
+    filesurl: 'https://4flyrjapp-ezd2gdbfa6eze7h2.brazilsouth-01.azurewebsites.net/files/'
+};
