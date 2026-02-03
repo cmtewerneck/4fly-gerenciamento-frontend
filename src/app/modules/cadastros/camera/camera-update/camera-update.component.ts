@@ -20,8 +20,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Camera } from '../cameras.model';
+import { AeronaveMatriculaDropdown, Camera, VendedoresDropdown } from '../cameras.model';
 import { environment } from 'environments/environment';
+import { VendedorService } from '../../vendedor/vendedor.service';
+import { AeronaveService } from '../../aeronave/aeronave.service';
 
 @Component({
     selector: 'app-camera-update',
@@ -57,14 +59,21 @@ export class CameraUpdateComponent implements OnInit {
     isLoading: boolean = false;
     mainForm: FormGroup;
     cameraToEdit: Camera;
+    matriculas: AeronaveMatriculaDropdown[];
+    vendedores: VendedoresDropdown[];
 
     constructor(
         private _formBuilder: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
+        private _vendedorService: VendedorService,
+        private _aeronaveService: AeronaveService,
         private _cameraService: CameraService) {}
 
     ngOnInit(): void {
+        this.carregarAeronaves();
+        this.carregarVendedores();
+
         this.mainForm = this._formBuilder.group({
             id: ['', [Validators.required]],
             dataVenda: ['', [Validators.required]],
@@ -85,6 +94,28 @@ export class CameraUpdateComponent implements OnInit {
         });
 
         this.loadEntity();
+    }
+
+    carregarAeronaves() {
+        this._aeronaveService.getAllMatriculas().subscribe(result => {
+            this.matriculas = result;
+            console.log(this.matriculas);
+        }, error => {
+            console.log(error);
+        }, () => {
+            this.isLoading = false;
+        });
+    }
+
+    carregarVendedores() {
+        this._vendedorService.getAllNomes().subscribe(result => {
+            this.vendedores = result;
+            console.log(this.vendedores);
+        }, error => {
+            console.log(error);
+        }, () => {
+            this.isLoading = false;
+        });
     }
 
     loadEntity() {

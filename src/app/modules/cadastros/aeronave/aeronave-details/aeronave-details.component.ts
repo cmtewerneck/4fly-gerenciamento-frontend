@@ -75,5 +75,12 @@ export class AeronaveDetailsComponent implements OnInit {
     edit() {
         this.router.navigate(['/aeronaves/atualizar/' + this.aeronaveId]);
     }
+
+    abastecimentos() {
+        this.router.navigate(['/abastecimentos/' + this.aeronaveId]);
+    }
     
+    tarifas() {
+        this.router.navigate(['/tarifas/' + this.aeronaveId]);
+    }
 }

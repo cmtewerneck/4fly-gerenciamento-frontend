@@ -1,0 +1,81 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+
+    <!-- Header -->
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+
+        <!-- Loader -->
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+
+        <!-- Title -->
+        <div class="text-4xl font-extrabold tracking-tight">
+            Nova Tarifa
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <button class="ml-4" mat-flat-button [color]="'primary'" (click)="voltar()">
+                <span class="ml-2 mr-1">Cancelar</span>
+            </button>
+            <button class="ml-4" mat-flat-button [color]="'primary'" (click)="save()">
+                <span class="ml-2 mr-1">Salvar</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+
+    <form [formGroup]="mainForm" class="flex flex-col overflow-y-scroll overflow-x-hidden p-8">
+        <div class="flex flex-row">
+            <mat-form-field class="flex-1">
+                <mat-label>Data</mat-label>
+                <input matInput formControlName="data" type="date">
+                <mat-error *ngIf="this.mainForm.get('data').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+    
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Origem</mat-label>
+                <input matInput formControlName="origem">
+                <mat-error *ngIf="this.mainForm.get('origem').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Valor</mat-label>
+                <input matInput formControlName="valor" type="number">
+                <mat-error *ngIf="this.mainForm.get('valor').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Status</mat-label>
+                <input matInput formControlName="status">
+                <mat-error *ngIf="this.mainForm.get('status').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Data Pagamento</mat-label>
+                <input matInput formControlName="dataPagamento" type="date">
+            </mat-form-field>
+    
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Vencimento</mat-label>
+                <input matInput formControlName="vencimento" type="date">
+            </mat-form-field>
+        </div>
+
+        <div class="flex flex-row">
+            <mat-form-field class="flex-1">
+                <mat-label>Nota</mat-label>
+                <input matInput formControlName="nota">
+            </mat-form-field>
+    
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Código de barras</mat-label>
+                <input matInput formControlName="codigoBarras">
+            </mat-form-field>
+        </div>
+
+    </form>
+
+</div>

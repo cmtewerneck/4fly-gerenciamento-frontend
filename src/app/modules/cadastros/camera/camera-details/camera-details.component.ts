@@ -28,6 +28,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { registerLocaleData } from '@angular/common';
 
 @Component({
     selector: 'app-camera-details',
@@ -59,7 +60,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatTabsModule,
         CommonModule,
         DatePipe
-    ],
+    ]
 })
 export class CameraDetailsComponent implements OnInit {
     @ViewChild('recentTransactionsTable', { read: MatSort })
@@ -69,6 +70,10 @@ export class CameraDetailsComponent implements OnInit {
     cameraId: string;
     imagens: string = environment.imagensUrl; 
     cameras: Camera[] = [];
+    totalBruto: number = 0;
+    totalLiquido: number = 0;
+    comissaoVendedor: number = 0;
+    totalVendas: number = 0;
 
     pagination = {
             length: 0,
@@ -138,6 +143,16 @@ export class CameraDetailsComponent implements OnInit {
         this._cameraService.list(this.query).subscribe(result => {
             this.cameras = result.data;
             this.pagination.length = result.totalRecords;
+            this.totalBruto = 0;
+            this.totalLiquido = 0;
+            this.cameras.forEach(camera => {
+                this.totalBruto += camera.valorBruto;
+                this.totalLiquido += camera.valorLiquido;
+            });
+            
+            this.comissaoVendedor = this.totalBruto * 0.1;
+            this.totalVendas = result.totalRecords;
+
         }, error => {
             console.log(error);
         }, () => {
@@ -191,7 +206,7 @@ export class CameraDetailsComponent implements OnInit {
         confirmation.afterClosed().subscribe((result) => {
             // If the confirm button pressed...
             if (result === 'confirmed') {
-                const $obs = this._cameraService.updateDeleting(id);
+                const $obs = this._cameraService.delete(id);
 
                 this.isLoading = true;
                 $obs.subscribe(_ => {

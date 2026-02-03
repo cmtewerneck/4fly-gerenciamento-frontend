@@ -87,6 +87,9 @@ export const appRoutes: Route[] = [
                 {path: 'crypto', loadChildren: () => import('app/modules/admin/dashboards/crypto/crypto.routes')},
             ]},
 
+            {path: 'vendedores', loadChildren: () => import('app/modules/cadastros/vendedor/vendedor.routes')},
+            {path: 'tarifas', loadChildren: () => import('app/modules/cadastros/tarifas/tarifa.routes')},
+            {path: 'abastecimentos', loadChildren: () => import('app/modules/cadastros/abastecimentos/abastecimento.routes')},
             {path: 'aeronaves', loadChildren: () => import('app/modules/cadastros/aeronave/aeronave.routes')},
             {path: 'colaboradores', loadChildren: () => import('app/modules/cadastros/colaboradores/colaboradores.routes')},
             {path: 'tripulantes', loadChildren: () => import('app/modules/cadastros/tripulante/tripulantes.routes')},

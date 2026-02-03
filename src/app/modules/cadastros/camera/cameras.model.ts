@@ -17,3 +17,11 @@ export interface Camera extends Entity{
     privacidade: string;
     observacoes: string;
 }
+
+export interface AeronaveMatriculaDropdown{
+    matricula: string;
+}
+
+export interface VendedoresDropdown{
+    nome: string;
+}

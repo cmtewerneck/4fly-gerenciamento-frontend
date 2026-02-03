@@ -50,7 +50,7 @@ export abstract class BaseApiService<T> {
     /**
      * Obtém uma lista com as entidades considerando filtros, paginação e ordenação. 
      */
-     list(query: QueryInfo): Observable<PagedResult<T>> {
+    list(query: QueryInfo): Observable<PagedResult<T>> {
         return this.api.post(`${this.path}/list`, query, {});
     }
 }

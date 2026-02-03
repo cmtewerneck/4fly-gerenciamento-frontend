@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CameraService } from '../cameras.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRippleModule } from '@angular/material/core';
@@ -20,8 +20,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
-import { Camera } from '../cameras.model';
+import { AeronaveMatriculaDropdown, Camera, VendedoresDropdown } from '../cameras.model';
 import { SafePipe } from 'app/shared/pipes/safe.pipe';
+import { AeronaveService } from '../../aeronave/aeronave.service';
+import { VendedorService } from '../../vendedor/vendedor.service';
 
 @Component({
     selector: 'app-camera-edit',
@@ -40,6 +42,7 @@ import { SafePipe } from 'app/shared/pipes/safe.pipe';
             MatProgressBarModule,
             MatRippleModule,
             MatSortModule,
+            CurrencyPipe,
             MatSelectModule,
             MatSlideToggleModule,
             MatTableModule,
@@ -58,13 +61,20 @@ export class CameraEditComponent implements OnInit {
     isLoading: boolean = false;
     mainForm: FormGroup;
     camera: Camera;
+    matriculas: AeronaveMatriculaDropdown[];
+    vendedores: VendedoresDropdown[];
 
     constructor(
         private _formBuilder: FormBuilder,
         private router: Router,
-        private _cameraService: CameraService) {}
+        private _cameraService: CameraService,
+        private _vendedorService: VendedorService,
+        private _aeronaveService: AeronaveService) {}
 
     ngOnInit(): void {
+
+        this.carregarAeronaves();
+        this.carregarVendedores();
 
         this.mainForm = this._formBuilder.group({
             dataVenda: ['', [Validators.required]],
@@ -82,6 +92,28 @@ export class CameraEditComponent implements OnInit {
             mesmoVoo: [false],
             privacidade: [''],
             observacoes: ['']
+        });
+    }
+
+    carregarAeronaves() {
+        this._aeronaveService.getAllMatriculas().subscribe(result => {
+            this.matriculas = result;
+            console.log(this.matriculas);
+        }, error => {
+            console.log(error);
+        }, () => {
+            this.isLoading = false;
+        });
+    }
+
+    carregarVendedores() {
+        this._vendedorService.getAllNomes().subscribe(result => {
+            this.vendedores = result;
+            console.log(this.vendedores);
+        }, error => {
+            console.log(error);
+        }, () => {
+            this.isLoading = false;
         });
     }
 

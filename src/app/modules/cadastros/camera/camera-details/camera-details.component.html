@@ -76,23 +76,10 @@
                         <div class="truncate text-lg font-medium leading-6 tracking-tight">
                             Receita Bruta
                         </div>
-                        <div class="-mr-3 -mt-2 ml-2">
-                            <button mat-icon-button [matMenuTriggerFor]="summaryMenu">
-                                <mat-icon class="icon-size-5" [svgIcon]="'heroicons_mini:ellipsis-vertical'"></mat-icon>
-                            </button>
-                            <mat-menu #summaryMenu="matMenu">
-                                <button mat-menu-item>
-                                    Mês atual
-                                </button>
-                                <button mat-menu-item>
-                                    Mês anterior
-                                </button>
-                            </mat-menu>
-                        </div>
                     </div>
                     <div class="mt-2 flex flex-col items-center">
                         <div class="font-bold leading-none tracking-tight text-blue-500" style="font-size: 2rem;">
-                            R$ 45.000,00
+                            R$ {{this.totalBruto | number:'1.2-2'}}
                         </div>
                         <div class="text-lg font-medium text-blue-600 dark:text-blue-500">
                             sem descontos
@@ -105,23 +92,10 @@
                         <div class="truncate text-lg font-medium leading-6 tracking-tight">
                             Receita Líquida
                         </div>
-                        <div class="-mr-3 -mt-2 ml-2">
-                            <button mat-icon-button [matMenuTriggerFor]="overdueMenu">
-                                <mat-icon class="icon-size-5" [svgIcon]="'heroicons_mini:ellipsis-vertical'"></mat-icon>
-                            </button>
-                            <mat-menu #overdueMenu="matMenu">
-                                <button mat-menu-item>
-                                    Mês atual
-                                </button>
-                                <button mat-menu-item>
-                                    Mês anterior
-                                </button>
-                            </mat-menu>
-                        </div>
                     </div>
                     <div class="mt-2 flex flex-col items-center">
                         <div class="font-bold leading-none tracking-tight text-red-500" style="font-size: 2rem;">
-                            R$ 41.000,00
+                            R$ {{this.totalLiquido | number:'1.2-2'}}
                         </div>
                         <div class="text-lg font-medium text-red-600 dark:text-red-500">
                             com descontos
@@ -134,26 +108,10 @@
                         <div class="truncate text-lg font-medium leading-6 tracking-tight">
                             Comissão vendedor
                         </div>
-                        <div class="-mr-3 -mt-2 ml-2">
-                            <button mat-icon-button [matMenuTriggerFor]="issuesMenu">
-                                <mat-icon class="icon-size-5" [svgIcon]="'heroicons_mini:ellipsis-vertical'"></mat-icon>
-                            </button>
-                            <mat-menu #issuesMenu="matMenu">
-                                <button mat-menu-item>
-                                    Vendedor 1
-                                </button>
-                                <button mat-menu-item>
-                                    Vendedor 2
-                                </button>
-                                <button mat-menu-item>
-                                    Vendedor 3
-                                </button>
-                            </mat-menu>
-                        </div>
                     </div>
                     <div class="mt-2 flex flex-col items-center">
                         <div class="font-bold leading-none tracking-tight text-amber-500" style="font-size: 2rem;">
-                            R$ 4.000,00
+                            R$ {{this.comissaoVendedor | number:'1.2-2'}}
                         </div>
                         <div class="text-lg font-medium text-amber-600 dark:text-amber-500">
                             mês atual
@@ -166,23 +124,10 @@
                         <div class="truncate text-lg font-medium leading-6 tracking-tight">
                             Câmeras vendidas
                         </div>
-                        <div class="-mr-3 -mt-2 ml-2">
-                            <button mat-icon-button [matMenuTriggerFor]="featuresMenu">
-                                <mat-icon class="icon-size-5" [svgIcon]="'heroicons_mini:ellipsis-vertical'"></mat-icon>
-                            </button>
-                            <mat-menu #featuresMenu="matMenu">
-                                <button mat-menu-item>
-                                    Mês atual
-                                </button>
-                                <button mat-menu-item>
-                                    Mês anterior
-                                </button>
-                            </mat-menu>
-                        </div>
                     </div>
                     <div class="mt-2 flex flex-col items-center">
                         <div class="font-bold leading-none tracking-tight text-green-500" style="font-size: 2rem;">
-                            38
+                            {{this.totalVendas}}
                         </div>
                         <div class="text-lg font-medium text-green-600 dark:text-green-500">
                             vendas

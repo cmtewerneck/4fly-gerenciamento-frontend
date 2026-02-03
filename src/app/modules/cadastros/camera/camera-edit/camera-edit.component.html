@@ -61,25 +61,29 @@
 
             <mat-form-field class="flex-1 ml-2">
                 <mat-label>Aeronave</mat-label>
-                <input matInput formControlName="aeronave">
+                <select matNativeControl required formControlName="aeronave">
+                    <option *ngFor="let aeronave of matriculas" value="{{aeronave.matricula}}">{{ aeronave.matricula | uppercase}}</option>
+                </select>
                 <mat-error *ngIf="this.mainForm.get('aeronave').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
 
             <mat-form-field class="flex-1 ml-2">
                 <mat-label>Vendedor</mat-label>
-                <input matInput formControlName="vendedor">
+                <select matNativeControl required formControlName="vendedor">
+                    <option *ngFor="let vendedor of vendedores" value="{{vendedor.nome}}">{{ vendedor.nome }}</option>
+                </select>
                 <mat-error *ngIf="this.mainForm.get('vendedor').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
 
              <mat-form-field class="flex-1 ml-2">
                 <mat-label>Valor Bruto (R$)</mat-label>
-                <input matInput formControlName="valorBruto">
+                <input matInput formControlName="valorBruto" type="number">
                 <mat-error *ngIf="this.mainForm.get('valorBruto').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
 
             <mat-form-field class="flex-1 ml-2">
                 <mat-label>Valor Líquido (R$)</mat-label>
-                <input matInput formControlName="valorLiquido">
+                <input matInput formControlName="valorLiquido" type="number">
                 <mat-error *ngIf="this.mainForm.get('valorLiquido').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
         </div>
@@ -87,7 +91,12 @@
         <div class="flex flex-row">
             <mat-form-field class="flex-1">
                 <mat-label>Status</mat-label>
-                <input matInput formControlName="status">
+                <select matNativeControl required formControlName="status">
+                    <option value="Em edição"> Em edição</option>
+                    <option value="Editado e não enviado"> Editado e não enviado</option>
+                    <option value="Editado e enviado"> Editado e enviado</option>
+                    <option value="Estornado"> Estornado</option>
+                </select>
                 <mat-error *ngIf="this.mainForm.get('status').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
 

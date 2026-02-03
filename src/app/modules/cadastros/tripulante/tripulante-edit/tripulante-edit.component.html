@@ -31,13 +31,13 @@
             <mat-form-field class="flex-1">
                 <mat-label>Nome</mat-label>
                 <input matInput formControlName="nome">
-                <mat-error *ngIf="this.mainForm.get('nome').invalid">Informe o nome</mat-error>
+                <mat-error *ngIf="this.mainForm.get('nome').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
     
             <mat-form-field class="flex-1 ml-2">
                 <mat-label>CPF</mat-label>
                 <input matInput formControlName="cpf" maxlength="11">
-                <mat-error *ngIf="this.mainForm.get('cpf').invalid">Informe o CPF</mat-error>
+                <mat-error *ngIf="this.mainForm.get('cpf').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
     
             <mat-form-field class="flex-1 ml-2">
@@ -48,7 +48,7 @@
             <mat-form-field class="flex-1 ml-2">
                 <mat-label>CANAC</mat-label>
                 <input matInput formControlName="canac">
-                <mat-error *ngIf="this.mainForm.get('canac').invalid">Informe o CANAC</mat-error>
+                <mat-error *ngIf="this.mainForm.get('canac').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
 
             <mat-form-field class="flex-1 ml-2">

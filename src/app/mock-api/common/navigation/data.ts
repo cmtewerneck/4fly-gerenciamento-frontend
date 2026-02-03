@@ -44,28 +44,10 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:cog-8-tooth',
                 children: [
                     {
-                        id: 'tempoVoo',
-                        title: 'Tempos de voo',
-                        type: 'basic',
-                        link: '/tempos-de-voo',
-                    },
-                    {
                         id: 'vendedores',
                         title: 'Vendedores',
                         type: 'basic',
                         link: '/vendedores',
-                    },
-                    {
-                        id: 'precos',
-                        title: 'Preços',
-                        type: 'basic',
-                        link: '/precos',
-                    },
-                    {
-                        id: 'operadores',
-                        title: 'Operadores',
-                        type: 'basic',
-                        link: '/operadores',
                     }
                 ],
             }
