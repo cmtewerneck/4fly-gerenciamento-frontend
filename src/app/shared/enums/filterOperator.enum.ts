@@ -5,4 +5,7 @@ export enum FilterOperatorEnum {
     NotContains = 4,
     IsNull = 5,
     IsNotNull = 6,
+    Between = 7,
+    HigherOrEqual = 8,
+    LessOrEqual = 9
 }

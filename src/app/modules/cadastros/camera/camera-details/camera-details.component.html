@@ -183,6 +183,16 @@
                                         <mat-label>Aeronave</mat-label>
                                         <input matInput formControlName="aeronave">
                                     </mat-form-field>
+
+                                    <mat-form-field>
+                                        <mat-label>Início</mat-label>
+                                        <input matInput formControlName="dataInicio" type="date">
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <mat-label>Término</mat-label>
+                                        <input matInput formControlName="dataTermino" type="date">
+                                    </mat-form-field>
                     
                                     <button mat-raised-button (click)="clearFilter()">
                                         <span class="ml-2 mr-1">Limpar</span>

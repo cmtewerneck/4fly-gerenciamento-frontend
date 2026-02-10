@@ -29,6 +29,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { registerLocaleData } from '@angular/common';
+import { CameraQuery } from 'app/shared/models/cameraQuery.model';
 
 @Component({
     selector: 'app-camera-details',
@@ -74,6 +75,7 @@ export class CameraDetailsComponent implements OnInit {
     totalLiquido: number = 0;
     comissaoVendedor: number = 0;
     totalVendas: number = 0;
+    cameraResultado: CameraQuery;
 
     pagination = {
             length: 0,
@@ -82,6 +84,7 @@ export class CameraDetailsComponent implements OnInit {
         };
     
     private query = new QueryInfo();
+    private resultado = new CameraQuery();
 
     isEdit = false;
     selectedId: string = null;
@@ -105,6 +108,8 @@ export class CameraDetailsComponent implements OnInit {
         this.filterForm = this._formBuilder.group({
             vendedor: [''],
             aeronave: [''],
+            dataInicio: [null],
+            dataTermino: [null]
         });
 
         this.query.filters = [];
@@ -115,7 +120,13 @@ export class CameraDetailsComponent implements OnInit {
         this.query.pageNumber = 1;
         this.query.pageSize = 25;
 
+        this.resultado.aeronave = "";
+        this.resultado.vendedor = "";
+        this.resultado.dataInicio = null;
+        this.resultado.dataTermino = null;
+
         this.load();
+        this.loadResultados();
     }
 
     trackByFn(index: number, item: any): any {
@@ -143,16 +154,20 @@ export class CameraDetailsComponent implements OnInit {
         this._cameraService.list(this.query).subscribe(result => {
             this.cameras = result.data;
             this.pagination.length = result.totalRecords;
-            this.totalBruto = 0;
-            this.totalLiquido = 0;
-            this.cameras.forEach(camera => {
-                this.totalBruto += camera.valorBruto;
-                this.totalLiquido += camera.valorLiquido;
-            });
-            
-            this.comissaoVendedor = this.totalBruto * 0.1;
-            this.totalVendas = result.totalRecords;
+        }, error => {
+            console.log(error);
+        }, () => {
+            this.isLoading = false;
+        });
+    }
 
+    loadResultados() {
+        this.isLoading = true;
+        this._cameraService.getResultados(this.resultado).subscribe(result => {
+            this.totalVendas = result.totalVendas;
+            this.comissaoVendedor = result.comissaoVendedor;
+            this.totalBruto = result.totalBruto;
+            this.totalLiquido = result.totalLiquido;
         }, error => {
             console.log(error);
         }, () => {
@@ -224,6 +239,8 @@ export class CameraDetailsComponent implements OnInit {
         this.query.filters = [];
         const filter = this.filterForm.value;
 
+        this.resultado = Object.assign({}, this.resultado, this.filterForm.value)
+
         if (filter.vendedor?.trim()) {
             this.query.filters.push(new FilterInfo('vendedor', FieldTypeEnum.String, FilterOperatorEnum.Contains, filter.vendedor.trim()));
         }
@@ -232,10 +249,19 @@ export class CameraDetailsComponent implements OnInit {
             this.query.filters.push(new FilterInfo('aeronave', FieldTypeEnum.String, FilterOperatorEnum.Contains, filter.aeronave.trim()));
         }
 
+        if (filter.dataInicio?.trim()) {
+            this.query.filters.push(new FilterInfo('dataInicio', FieldTypeEnum.DateTime, FilterOperatorEnum.HigherOrEqual, filter.dataInicio.trim()));
+        }
+
+        if (filter.dataTermino?.trim()) {
+            this.query.filters.push(new FilterInfo('dataTermino', FieldTypeEnum.DateTime, FilterOperatorEnum.LessOrEqual, filter.dataTermino.trim()));
+        }
+
         this.query.pageNumber = 1;
         this.pagination.page = 0;
 
         this.load();
+        this.loadResultados();
     }
 
     clearFilter() {

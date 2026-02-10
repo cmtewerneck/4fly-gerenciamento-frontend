@@ -25,3 +25,10 @@ export interface AeronaveMatriculaDropdown{
 export interface VendedoresDropdown{
     nome: string;
 }
+
+export interface CameraResultado{
+    totalVendas: number;
+    comissaoVendedor: number;
+    totalBruto: number;
+    totalLiquido: number;
+}
