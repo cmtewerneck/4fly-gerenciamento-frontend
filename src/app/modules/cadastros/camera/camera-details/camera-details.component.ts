@@ -90,7 +90,7 @@ export class CameraDetailsComponent implements OnInit {
     selectedId: string = null;
 
     productsCount: number = 0;
-    productsTableColumns: string[] = ['dataVenda', 'horaVoo', 'nomePassageiro', 'aeronave', 'vendedor', 'valorBruto', 'valorLiquido', 'status', 'actions'];
+    productsTableColumns: string[] = ['data', 'horaVoo', 'nomePassageiro', 'aeronave', 'vendedor', 'valorBruto', 'valorLiquido', 'status', 'actions'];
 
     searchInputControl: FormControl = new FormControl();
 
@@ -114,7 +114,7 @@ export class CameraDetailsComponent implements OnInit {
 
         this.query.filters = [];
         this.query.order = {
-            fieldName: "dataVenda",
+            fieldName: "data",
             direction: OrderDirectionEnum.Descending
         };
         this.query.pageNumber = 1;

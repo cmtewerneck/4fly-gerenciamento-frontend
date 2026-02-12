@@ -48,6 +48,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         title: 'Vendedores',
                         type: 'basic',
                         link: '/vendedores',
+                    },
+                    {
+                        id: 'fornecedoras',
+                        title: 'Fornecedoras',
+                        type: 'basic',
+                        link: '/fornecedoras',
                     }
                 ],
             }

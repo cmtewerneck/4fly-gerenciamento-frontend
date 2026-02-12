@@ -225,13 +225,13 @@
                                                 [trackBy]="trackByFn">
                         
                                                 <!-- dataVenda -->
-                                                <ng-container matColumnDef="dataVenda">
+                                                <ng-container matColumnDef="data">
                                                     <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef
                                                         mat-sort-header disableClear>
                                                         Data
                                                     </th>
                                                     <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                                                        {{row.dataVenda | date: 'dd/MM/yyyy'}}
+                                                        {{row.data | date: 'dd/MM/yyyy'}}
                                                     </td>
                                                 </ng-container>
 
@@ -307,9 +307,9 @@
                                                         mat-sort-header disableClear>
                                                         Status
                                                     </th>
-                                                    <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                                                    <td class="pr-8 truncate" mat-cell *matCellDef="let row" [ngStyle]="{'color': row.status === 'Em edição' ? 'red' : row.status === 'Editado e enviado' ? 'green' : row.status === 'Editado e não enviado' ? 'rgb(207, 207, 0)' : row.status === 'Estornado' ? 'red' : 'black'}">
                                                         {{row.status}}
-                                                    </td>
+                                                    </td>                                                
                                                 </ng-container>
 
                                                 <!-- actions -->

@@ -43,13 +43,18 @@
 
             <mat-form-field class="flex-1 ml-2">
                 <mat-label>Fornecedora</mat-label>
-                <input matInput formControlName="fornecedora">
+                <select matNativeControl required formControlName="fornecedora">
+                    <option *ngFor="let fornecedor of fornecedoras" value="{{fornecedor.nome}}">{{ fornecedor.nome }}</option>
+                </select>
                 <mat-error *ngIf="this.mainForm.get('fornecedora').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
 
             <mat-form-field class="flex-1 ml-2">
                 <mat-label>Status</mat-label>
-                <input matInput formControlName="status">
+                <select matNativeControl required formControlName="status">
+                    <option value="Pago"> Pago</option>
+                    <option value="Pendente"> Pendente</option>
+                </select>
                 <mat-error *ngIf="this.mainForm.get('status').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
         </div>

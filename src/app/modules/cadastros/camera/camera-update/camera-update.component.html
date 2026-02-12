@@ -31,8 +31,8 @@
         <div class="flex flex-row">
             <mat-form-field class="flex-1">
                 <mat-label>Data</mat-label>
-                <input matInput formControlName="dataVenda" type="date">
-                <mat-error *ngIf="this.mainForm.get('dataVenda').invalid">Campo obrigatório</mat-error>
+                <input matInput formControlName="data" type="date">
+                <mat-error *ngIf="this.mainForm.get('data').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
     
             <mat-form-field class="flex-1 ml-2">
@@ -91,7 +91,12 @@
         <div class="flex flex-row">
             <mat-form-field class="flex-1">
                 <mat-label>Status</mat-label>
-                <input matInput formControlName="status">
+                <select matNativeControl required formControlName="status">
+                    <option value="Em edição"> Em edição</option>
+                    <option value="Editado e não enviado"> Editado e não enviado</option>
+                    <option value="Editado e enviado"> Editado e enviado</option>
+                    <option value="Estornado"> Estornado</option>
+                </select>
                 <mat-error *ngIf="this.mainForm.get('status').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
 

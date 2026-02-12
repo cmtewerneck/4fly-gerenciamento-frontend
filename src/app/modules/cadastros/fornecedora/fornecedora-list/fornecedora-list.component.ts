@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { FieldTypeEnum } from 'app/shared/enums/fieldType.enum';
@@ -9,8 +9,8 @@ import { OrderDirectionEnum } from 'app/shared/enums/orderDirection.enum';
 import { FilterInfo } from 'app/shared/models/filterInfo.model';
 import { QueryInfo } from 'app/shared/models/queryInfo.model';
 import { MatDialog } from '@angular/material/dialog';
-import { AeronaveAbastecimento, FornecedorasDropdown } from '../abastecimento.model';
-import { AeronaveAbastecimentoService } from '../abastecimento.service';
+import { FornecedoraAbastecimento } from '../fornecedora.model';
+import { FornecedoraAbastecimentoService } from '../fornecedora.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,13 +29,14 @@ import { CommonModule } from '@angular/common';
 import { UppercasePipe } from 'app/shared/pipes/uppercase.pipe';
 import { OperacionalPipe } from 'app/shared/pipes/operacional.pipe';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { FornecedoraAbastecimentoService } from '../../fornecedora/fornecedora.service';
-import { AbastecimentoQuery } from 'app/shared/models/abastecimentoQuery.model';
+import { SituacaoColaboradorPipe } from 'app/shared/pipes/situacao-colaborador.pipe';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
+import { SituacaoVendedorPipe } from 'app/shared/pipes/situacao-vendedor.pipe';
 
 @Component({
-    selector: 'app-abastecimento-list',
-    templateUrl: './abastecimento-list.component.html',
-    styleUrls: ['./abastecimento-list.component.scss'],
+    selector: 'app-fornecedora-list',
+    templateUrl: './fornecedora-list.component.html',
+    styleUrls: ['./fornecedora-list.component.scss'],
     encapsulation: ViewEncapsulation.None,
     imports:[
         MatButtonModule,
@@ -50,6 +51,7 @@ import { AbastecimentoQuery } from 'app/shared/models/abastecimentoQuery.model';
         MatSortModule,
         MatSelectModule,
         MatSlideToggleModule,
+        SituacaoVendedorPipe,
         MatTableModule,
         MatTooltipModule,
         MatExpansionModule,
@@ -59,19 +61,20 @@ import { AbastecimentoQuery } from 'app/shared/models/abastecimentoQuery.model';
         ReactiveFormsModule,
         FormsModule,
         UppercasePipe,
-        OperacionalPipe
+        OperacionalPipe,
+        SituacaoColaboradorPipe
     ]
 })
 
-export class AeronaveAbastecimentoListComponent implements OnInit, OnDestroy {
+export class FornecedoraAbastecimentoListComponent implements OnInit, OnDestroy {
 
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
+    private _snackBar = inject(MatSnackBar);
+        horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+        verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
-    abastecimentos: AeronaveAbastecimento[] = [];
-    aeronaveId: string;
-    fornecedoras: FornecedorasDropdown[];
-    abastecimentoResultado: AbastecimentoQuery;
+    fornecedoras: FornecedoraAbastecimento[] = [];
 
     pagination = {
         length: 0,
@@ -80,11 +83,10 @@ export class AeronaveAbastecimentoListComponent implements OnInit, OnDestroy {
     };
 
     private query = new QueryInfo();
-    private resultado = new AbastecimentoQuery();
 
     isLoading: boolean = false;
     productsCount: number = 0;
-    productsTableColumns: string[] = ['data', 'matricula', 'litros', 'fornecedora', 'valorUnitario', 'valorTotal', 'status', 'dataPagamento', 'nota', 'codigoBarras', 'vencimento', 'actions'];
+    productsTableColumns: string[] = ['nome', 'chavePix', 'cnpj', 'actions'];
 
     searchInputControl: FormControl = new FormControl();
 
@@ -94,58 +96,29 @@ export class AeronaveAbastecimentoListComponent implements OnInit, OnDestroy {
     filtersExpanded = false;
     filterForm: FormGroup;
 
-    volume: number = 0;
-    fornecedora: string = "";
-    status: string = "";
-    valor: number = 0;
-
     constructor(
-        private _aeronaveAbastecimentoService: AeronaveAbastecimentoService,
+        private _fornecedoraAbastecimentoService: FornecedoraAbastecimentoService,
         private _formBuilder: FormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         public dialog: MatDialog,
-        private route: ActivatedRoute,
-        private _fornecedoraAbastecimentoService: FornecedoraAbastecimentoService,
         private router: Router
-    ) {this.aeronaveId = this.route.snapshot.paramMap.get('id');}
+    ) {
+    }
 
     ngOnInit(): void {
-        this.carregarFornecedoras();
-
         this.filterForm = this._formBuilder.group({
-            status: [''],
-            fornecedora: [''],
-            dataInicio: [null],
-            dataTermino: [null]
+            nome: ['']
         });
 
         this.query.filters = [];
         this.query.order = {
-            fieldName: "data",
-            direction: OrderDirectionEnum.Descending
+            fieldName: "nome",
+            direction: OrderDirectionEnum.Ascending
         };
         this.query.pageNumber = 1;
         this.query.pageSize = 25;
 
-        this.resultado.fornecedora = "";
-        this.resultado.status = "";
-        this.resultado.dataInicio = null;
-        this.resultado.dataTermino = null;
-        this.resultado.aeronaveId = this.aeronaveId;
-
         this.load();
-        this.loadResultados();
-    }
-
-    carregarFornecedoras() {
-        this._fornecedoraAbastecimentoService.getAllNomes().subscribe(result => {
-            this.fornecedoras = result;
-            console.log(this.fornecedoras);
-        }, error => {
-            console.log(error);
-        }, () => {
-            this.isLoading = false;
-        });
     }
 
     ngOnDestroy(): void {
@@ -171,11 +144,12 @@ export class AeronaveAbastecimentoListComponent implements OnInit, OnDestroy {
         this.load();
     }
 
-    load() {
+    loadThiago() {
         this.isLoading = true;
-        this._aeronaveAbastecimentoService.listById(this.query, this.aeronaveId).subscribe(result => {
-            this.abastecimentos = result.data;
-            this.pagination.length = result.totalRecords;
+        this._fornecedoraAbastecimentoService.getAll().subscribe(result => {
+            this.fornecedoras = result;
+            console.log("Fornecedora: " + result);
+            // this.pagination.length = result.totalRecords;
         }, error => {
             console.log(error);
         }, () => {
@@ -183,13 +157,11 @@ export class AeronaveAbastecimentoListComponent implements OnInit, OnDestroy {
         });
     }
 
-    loadResultados() {
+    load() {
         this.isLoading = true;
-        this._aeronaveAbastecimentoService.getResultados(this.resultado).subscribe(result => {
-            this.volume = result.volume;
-            this.status = result.status;
-            this.fornecedora = result.fornecedora;
-            this.valor = result.valor;
+        this._fornecedoraAbastecimentoService.list(this.query).subscribe(result => {
+            this.fornecedoras = result.data;
+            this.pagination.length = result.totalRecords;
         }, error => {
             console.log(error);
         }, () => {
@@ -207,26 +179,21 @@ export class AeronaveAbastecimentoListComponent implements OnInit, OnDestroy {
         this.isEdit = false;
     }
 
-    details(id: string) {
-        this.selectedId = id;
-
-        this.router.navigate(['/abastecimentos/details/' + this.selectedId]);
-    }
-
     edit(id: string) {
         this.selectedId = id;
 
-        this.router.navigate(['/abastecimentos/atualizar/' + this.selectedId]);
+        this.router.navigate(['/fornecedoras/atualizar/' + this.selectedId]);
     }
 
     delete(id: string) {
         this.isLoading = true;
-        this._aeronaveAbastecimentoService.delete(id).subscribe(_ => {
+        this._fornecedoraAbastecimentoService.delete(id).subscribe(_ => {
             console.log("Exclusão com sucesso");
             this.load();
         }, error => {
             console.log(error);
         }, () => {
+            this.openSnackBar("Exclusão realizada com sucesso.","Fechar");
             this.isLoading = false;
         });
     }
@@ -234,9 +201,9 @@ export class AeronaveAbastecimentoListComponent implements OnInit, OnDestroy {
     deletar(id: string) {
         // Open the confirmation dialog
         const confirmation = this._fuseConfirmationService.open({
-            title: 'Deletar Abastecimento',
+            title: 'Deletar Fornecedora',
             message:
-                'Tem certeza que deseja deletar a abastecimento? Não será possível desfazer.',
+                'Tem certeza que deseja deletar a fornecedora? Não será possível desfazer.',
             actions: {
                 confirm: {
                     label: 'Deletar',
@@ -251,14 +218,13 @@ export class AeronaveAbastecimentoListComponent implements OnInit, OnDestroy {
         confirmation.afterClosed().subscribe((result) => {
             // If the confirm button pressed...
             if (result === 'confirmed') {
-                const $obs = this._aeronaveAbastecimentoService.updateDeleting(id);
-
                 this.isLoading = true;
-                $obs.subscribe(_ => {
-                    //this.toastr.success('Aeronave excluída com sucesso');
-                    this.isLoading = false;
+                this._fornecedoraAbastecimentoService.delete(id).subscribe(_ => {
                     this.load();
                 }, error => {
+                    console.log(error);
+                }, () => {
+                    this.openSnackBar("Exclusão realizada com sucesso.","Fechar");
                     this.isLoading = false;
                 });
             }
@@ -273,40 +239,24 @@ export class AeronaveAbastecimentoListComponent implements OnInit, OnDestroy {
         this.query.filters = [];
         const filter = this.filterForm.value;
 
-        this.resultado = Object.assign({}, this.resultado, this.filterForm.value)
-
-        if (filter.status?.trim()) {
-            this.query.filters.push(new FilterInfo('status', FieldTypeEnum.String, FilterOperatorEnum.Contains, filter.status.trim()));
-        }
-
-        if (filter.fornecedora?.trim()) {
-            this.query.filters.push(new FilterInfo('fornecedora', FieldTypeEnum.String, FilterOperatorEnum.Contains, filter.fornecedora.trim()));
-        }
-
-        if (filter.dataInicio?.trim()) {
-            this.query.filters.push(new FilterInfo('dataInicio', FieldTypeEnum.DateTime, FilterOperatorEnum.HigherOrEqual, filter.dataInicio.trim()));
-        }
-
-        if (filter.dataTermino?.trim()) {
-            this.query.filters.push(new FilterInfo('dataTermino', FieldTypeEnum.DateTime, FilterOperatorEnum.LessOrEqual, filter.dataTermino.trim()));
+        if (filter.nome?.trim()) {
+            this.query.filters.push(new FilterInfo('nome', FieldTypeEnum.String, FilterOperatorEnum.Contains, filter.nome.trim()));
         }
 
         this.query.pageNumber = 1;
         this.pagination.page = 0;
 
         this.load();
-        this.loadResultados();
     }
 
     clearFilter() {
         this.filterForm.reset();
     }
 
-    voltar(){
-         this.router.navigate(['/aeronaves/details/' + this.aeronaveId]);
-    }
-
-    novo(){
-         this.router.navigate(['/abastecimentos/' + this.aeronaveId + '/novo']);
+    openSnackBar(message1: string, message2: string) {
+        this._snackBar.open(message1, message2, {
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+        });
     }
 }

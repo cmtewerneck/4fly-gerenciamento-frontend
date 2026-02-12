@@ -20,8 +20,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AeronaveAbastecimento } from '../abastecimento.model';
+import { AeronaveAbastecimento, FornecedorasDropdown } from '../abastecimento.model';
 import { SafePipe } from 'app/shared/pipes/safe.pipe';
+import { FornecedoraAbastecimentoService } from '../../fornecedora/fornecedora.service';
 
 @Component({
     selector: 'app-abastecimento-edit',
@@ -59,14 +60,18 @@ export class AeronaveAbastecimentoEditComponent implements OnInit {
     mainForm: FormGroup;
     abastecimento: AeronaveAbastecimento;
     aeronaveId: string;
+    fornecedoras: FornecedorasDropdown[];
 
     constructor(
         private _formBuilder: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
+        private _fornecedoraAbastecimentoService: FornecedoraAbastecimentoService,
         private _aeronaveAbastecimentoService: AeronaveAbastecimentoService) {this.aeronaveId = this.route.snapshot.paramMap.get('id');}
 
     ngOnInit(): void {
+
+        this.carregarFornecedoras();
 
         this.mainForm = this._formBuilder.group({
             data: ['', [Validators.required]],
@@ -80,6 +85,17 @@ export class AeronaveAbastecimentoEditComponent implements OnInit {
             codigoBarras: [''],
             vencimento: [''],
             aeronaveId: [this.aeronaveId]
+        });
+    }
+
+    carregarFornecedoras() {
+        this._fornecedoraAbastecimentoService.getAllNomes().subscribe(result => {
+            this.fornecedoras = result;
+            console.log(this.fornecedoras);
+        }, error => {
+            console.log(error);
+        }, () => {
+            this.isLoading = false;
         });
     }
 

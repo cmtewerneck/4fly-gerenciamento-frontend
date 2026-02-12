@@ -18,3 +18,14 @@ export interface AeronaveDropdown{
     matricula: string;
     id: string;
 }
+
+export interface FornecedorasDropdown{
+    nome: string;
+}
+
+export interface AbastecimentoResultado{
+    volume: number;
+    fornecedora: string;
+    status: string;
+    valor: number;
+}

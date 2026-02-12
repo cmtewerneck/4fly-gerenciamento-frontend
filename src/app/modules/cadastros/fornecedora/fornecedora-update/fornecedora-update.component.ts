@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CameraService } from '../cameras.service';
+import { FornecedoraAbastecimentoService } from '../fornecedora.service';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -20,15 +20,14 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AeronaveMatriculaDropdown, Camera, VendedoresDropdown } from '../cameras.model';
+import { FornecedoraAbastecimento } from '../fornecedora.model';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
 import { environment } from 'environments/environment';
-import { VendedorService } from '../../vendedor/vendedor.service';
-import { AeronaveService } from '../../aeronave/aeronave.service';
 
 @Component({
-    selector: 'app-camera-update',
-    templateUrl: './camera-update.component.html',
-    styleUrls: ['./camera-update.component.scss'],
+    selector: 'app-fornecedora-update',
+    templateUrl: './fornecedora-update.component.html',
+    styleUrls: ['./fornecedora-update.component.scss'],
     encapsulation: ViewEncapsulation.None,
     imports:[
             MatButtonModule,
@@ -54,80 +53,36 @@ import { AeronaveService } from '../../aeronave/aeronave.service';
         ]
 })
 
-export class CameraUpdateComponent implements OnInit {
+export class FornecedoraAbastecimentoUpdateComponent implements OnInit {
 
     isLoading: boolean = false;
     mainForm: FormGroup;
-    cameraToEdit: Camera;
-    matriculas: AeronaveMatriculaDropdown[];
-    vendedores: VendedoresDropdown[];
+    fornecedoraAbastecimentoToEdit: FornecedoraAbastecimento;
+    private _snackBar = inject(MatSnackBar);
+            horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+            verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
     constructor(
         private _formBuilder: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
-        private _vendedorService: VendedorService,
-        private _aeronaveService: AeronaveService,
-        private _cameraService: CameraService) {}
+        private _fornecedoraAbastecimentoService: FornecedoraAbastecimentoService) {}
 
     ngOnInit(): void {
-        this.carregarAeronaves();
-        this.carregarVendedores();
-
         this.mainForm = this._formBuilder.group({
             id: ['', [Validators.required]],
-            data: ['', [Validators.required]],
-            horaVoo: ['', [Validators.required]],
-            nomePassageiro: ['', [Validators.required]],
-            telefonePassageiro: [''],
-            referencia: [''],
-            aeronave: ['', [Validators.required]],
-            vendedor: ['', [Validators.required]],
-            valorBruto: ['', [Validators.required]],
-            valorLiquido: ['', [Validators.required]],
-            status: ['', [Validators.required]],
-            linkYoutube: [''],
-            linkWeTransfer: [''],
-            mesmoVoo: [false],
-            privacidade: [''],
-            observacoes: ['']
+            nome: ['', [Validators.required]],
+            chavePix: [''],
+            cnpj: ['']
         });
 
         this.loadEntity();
     }
 
-    carregarAeronaves() {
-        this._aeronaveService.getAllMatriculas().subscribe(result => {
-            this.matriculas = result;
-            console.log(this.matriculas);
-        }, error => {
-            console.log(error);
-        }, () => {
-            this.isLoading = false;
-        });
-    }
-
-    carregarVendedores() {
-        this._vendedorService.getAllNomes().subscribe(result => {
-            this.vendedores = result;
-            console.log(this.vendedores);
-        }, error => {
-            console.log(error);
-        }, () => {
-            this.isLoading = false;
-        });
-    }
-
     loadEntity() {
         this.isLoading = true;
-        this._cameraService.getById(this.route.snapshot.params["id"]).subscribe(model => {
-
+        this._fornecedoraAbastecimentoService.getById(this.route.snapshot.params["id"]).subscribe(model => {
             this.mainForm.patchValue(model);
-
-             this.mainForm.patchValue({
-                dataVenda: model.data?.toString().split('T')[0] ?? null,
-            });
-
 
             this.isLoading = false;
         }, error => {
@@ -143,22 +98,25 @@ export class CameraUpdateComponent implements OnInit {
         }
 
         if (this.mainForm.dirty && this.mainForm.valid) {
-            this.cameraToEdit = Object.assign({}, this.cameraToEdit, this.mainForm.value)};
+            this.fornecedoraAbastecimentoToEdit = Object.assign({}, this.fornecedoraAbastecimentoToEdit, this.mainForm.value)};
 
-        this.cameraToEdit.valorBruto = Number(this.cameraToEdit.valorBruto);
-        this.cameraToEdit.valorLiquido = Number(this.cameraToEdit.valorLiquido);
-        if (this.cameraToEdit.data) { this.cameraToEdit.data = new Date(this.cameraToEdit.data); } else { this.cameraToEdit.data = null!; }
-
-        const $obs = this._cameraService.update(this.cameraToEdit);
+        const $obs = this._fornecedoraAbastecimentoService.update(this.fornecedoraAbastecimentoToEdit);
 
         this.isLoading = true;
         $obs.subscribe(_ => {
             //this._toastr.success('Aeronave criada com sucesso');
             this.isLoading = false;
-
-            this.router.navigate(['/cameras']);
+            this.openSnackBar("Alterações realizadas com sucesso.","Fechar");
+            this.router.navigate(['/fornecedoras']);
         }, error => {
             this.isLoading = false;
+        });
+    }
+
+    openSnackBar(message1: string, message2: string) {
+        this._snackBar.open(message1, message2, {
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
         });
     }
 

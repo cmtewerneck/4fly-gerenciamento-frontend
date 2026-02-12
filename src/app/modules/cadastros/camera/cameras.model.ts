@@ -1,7 +1,7 @@
 import { Entity } from "app/shared/models/entity.model";
 
 export interface Camera extends Entity{
-    dataVenda: Date;
+    data: Date;
     horaVoo: string;
     nomePassageiro: string;
     telefonePassageiro: string;

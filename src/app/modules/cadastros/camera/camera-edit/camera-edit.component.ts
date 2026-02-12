@@ -77,7 +77,7 @@ export class CameraEditComponent implements OnInit {
         this.carregarVendedores();
 
         this.mainForm = this._formBuilder.group({
-            dataVenda: ['', [Validators.required]],
+            data: ['', [Validators.required]],
             horaVoo: ['', [Validators.required]],
             nomePassageiro: ['', [Validators.required]],
             telefonePassageiro: [''],
@@ -128,7 +128,7 @@ export class CameraEditComponent implements OnInit {
 
         this.camera.valorBruto = Number(this.camera.valorBruto);
         this.camera.valorLiquido = Number(this.camera.valorLiquido);
-        if (this.camera.dataVenda) { this.camera.dataVenda = new Date(this.camera.dataVenda); } else { this.camera.dataVenda = null!; }
+        if (this.camera.data) { this.camera.data = new Date(this.camera.data); } else { this.camera.data = null!; }
 
         const $obs = this._cameraService.insert(this.camera);
 
