@@ -86,6 +86,8 @@ export class CameraEditComponent implements OnInit {
             vendedor: ['', [Validators.required]],
             valorBruto: ['', [Validators.required]],
             valorLiquido: ['', [Validators.required]],
+            percentualComissao: ['', [Validators.required]],
+            comissao: ['', [Validators.required]],
             status: ['', [Validators.required]],
             linkYoutube: [''],
             linkWeTransfer: [''],
@@ -93,6 +95,21 @@ export class CameraEditComponent implements OnInit {
             privacidade: [''],
             observacoes: ['']
         });
+
+        this.mainForm.valueChanges.subscribe(values => {
+            this.calcular(values);
+        });
+    }
+
+    calcular(values: any) {
+        const c1 = parseFloat(values.valorBruto) || 0;
+        const c2 = parseFloat(values.percentualComissao) || 0;
+        const comissao = c1 * (c2/100);
+
+        // 3. Popular o terceiro campo (patchValue para não disparar eventos infinitos)
+        this.mainForm.patchValue({
+        comissao: comissao
+        }, { emitEvent: false }); // emitEvent: false é crucial para evitar loop
     }
 
     carregarAeronaves() {
@@ -128,6 +145,8 @@ export class CameraEditComponent implements OnInit {
 
         this.camera.valorBruto = Number(this.camera.valorBruto);
         this.camera.valorLiquido = Number(this.camera.valorLiquido);
+        this.camera.percentualComissao = Number(this.camera.percentualComissao);
+        this.camera.comissao = Number(this.camera.comissao);
         if (this.camera.data) { this.camera.data = new Date(this.camera.data); } else { this.camera.data = null!; }
 
         const $obs = this._cameraService.insert(this.camera);

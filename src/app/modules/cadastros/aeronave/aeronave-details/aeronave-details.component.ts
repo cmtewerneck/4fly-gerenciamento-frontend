@@ -83,4 +83,8 @@ export class AeronaveDetailsComponent implements OnInit {
     tarifas() {
         this.router.navigate(['/tarifas/' + this.aeronaveId]);
     }
+
+     manutencoes() {
+        this.router.navigate(['/manutencoes/' + this.aeronaveId]);
+    }
 }

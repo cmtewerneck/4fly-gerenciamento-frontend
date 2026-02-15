@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AeronaveTarifaService } from '../manutencao.service';
+import { AeronaveManutencaoService } from '../manutencao.service';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -20,13 +20,13 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AeronaveTarifa } from '../manutencao.model';
+import { AeronaveManutencao } from '../manutencao.model';
 import { SafePipe } from 'app/shared/pipes/safe.pipe';
 
 @Component({
-    selector: 'app-tarifa-edit',
-    templateUrl: './tarifa-edit.component.html',
-    styleUrls: ['./tarifa-edit.component.scss'],
+    selector: 'app-manutencao-edit',
+    templateUrl: './manutencao-edit.component.html',
+    styleUrls: ['./manutencao-edit.component.scss'],
     encapsulation: ViewEncapsulation.None,
     imports:[
             SafePipe,
@@ -53,24 +53,25 @@ import { SafePipe } from 'app/shared/pipes/safe.pipe';
         ]
 })
 
-export class AeronaveTarifaEditComponent implements OnInit {
+export class AeronaveManutencaoEditComponent implements OnInit {
 
     isLoading: boolean = false;
     mainForm: FormGroup;
-    tarifa: AeronaveTarifa;
+    manutencao: AeronaveManutencao;
     aeronaveId: string;
 
     constructor(
         private _formBuilder: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
-        private _aeronaveTarifaService: AeronaveTarifaService) {this.aeronaveId = this.route.snapshot.paramMap.get('id');}
+        private _aeronaveManutencaoService: AeronaveManutencaoService) {this.aeronaveId = this.route.snapshot.paramMap.get('id');}
 
     ngOnInit(): void {
 
         this.mainForm = this._formBuilder.group({
             data: ['', [Validators.required]],
-            origem: ['', [Validators.required]],
+            descricao: ['', [Validators.required]],
+            realizadoPor: ['', [Validators.required]],
             valor: ['', [Validators.required]],
             status: ['', [Validators.required]],
             dataPagamento: [''],
@@ -88,39 +89,39 @@ export class AeronaveTarifaEditComponent implements OnInit {
         }
 
         if (this.mainForm.dirty && this.mainForm.valid) {
-            this.tarifa = Object.assign({}, this.tarifa, this.mainForm.value)};
+            this.manutencao = Object.assign({}, this.manutencao, this.mainForm.value)};
 
-        this.tarifa.valor = Number(this.tarifa.valor);
-        if (this.tarifa.data) { this.tarifa.data = new Date(this.tarifa.data); } else { this.tarifa.data = null!; }
-        if (this.tarifa.dataPagamento) { this.tarifa.dataPagamento = new Date(this.tarifa.dataPagamento); } else { this.tarifa.dataPagamento = null!; }
-        if (this.tarifa.vencimento) { this.tarifa.vencimento = new Date(this.tarifa.vencimento); } else { this.tarifa.vencimento = null!; }
+        this.manutencao.valor = Number(this.manutencao.valor);
+        if (this.manutencao.data) { this.manutencao.data = new Date(this.manutencao.data); } else { this.manutencao.data = null!; }
+        if (this.manutencao.dataPagamento) { this.manutencao.dataPagamento = new Date(this.manutencao.dataPagamento); } else { this.manutencao.dataPagamento = null!; }
+        if (this.manutencao.vencimento) { this.manutencao.vencimento = new Date(this.manutencao.vencimento); } else { this.manutencao.vencimento = null!; }
 
-        if(this.tarifa.data != null && this.tarifa.data.toString() == ""){
-            this.tarifa.data = null;
+        if(this.manutencao.data != null && this.manutencao.data.toString() == ""){
+            this.manutencao.data = null;
         }
 
-        if(this.tarifa.dataPagamento != null && this.tarifa.dataPagamento.toString() == ""){
-            this.tarifa.dataPagamento = null;
+        if(this.manutencao.dataPagamento != null && this.manutencao.dataPagamento.toString() == ""){
+            this.manutencao.dataPagamento = null;
         }
 
-        if(this.tarifa.vencimento != null && this.tarifa.vencimento.toString() == ""){
-            this.tarifa.vencimento = null;
+        if(this.manutencao.vencimento != null && this.manutencao.vencimento.toString() == ""){
+            this.manutencao.vencimento = null;
         }
 
-        const $obs = this._aeronaveTarifaService.insert(this.tarifa);
+        const $obs = this._aeronaveManutencaoService.insert(this.manutencao);
 
         this.isLoading = true;
         $obs.subscribe(_ => {
             this.isLoading = false;
 
-            this.router.navigate(['/tarifas/' + this.aeronaveId]);
+            this.router.navigate(['/manutencoes/' + this.aeronaveId]);
         }, error => {
             this.isLoading = false;
         });
     }   
     
     voltar(){
-        this.router.navigate(['/tarifas/' + this.aeronaveId]);
+        this.router.navigate(['/manutencoes/' + this.aeronaveId]);
     }
 
 }

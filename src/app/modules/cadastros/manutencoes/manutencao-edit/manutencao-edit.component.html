@@ -11,7 +11,7 @@
 
         <!-- Title -->
         <div class="text-4xl font-extrabold tracking-tight">
-            Nova Tarifa
+            Nova Manutenção
         </div>
 
         <!-- Actions -->
@@ -36,13 +36,15 @@
             </mat-form-field>
     
             <mat-form-field class="flex-1 ml-2">
-                <mat-label>Origem</mat-label>
-                <select matNativeControl required formControlName="origem">
-                    <option value="Decea"> Decea</option>
-                    <option value="PAX"> PAX</option>
-                    <option value="Infraero"> Infraero</option>
-                </select>
-                <mat-error *ngIf="this.mainForm.get('origem').invalid">Campo obrigatório</mat-error>
+                <mat-label>Descrição</mat-label>
+                <input matInput formControlName="descricao">
+                <mat-error *ngIf="this.mainForm.get('descricao').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Realizado Por</mat-label>
+                <input matInput formControlName="realizadoPor">
+                <mat-error *ngIf="this.mainForm.get('realizadoPor').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
 
             <mat-form-field class="flex-1 ml-2">

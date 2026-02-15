@@ -9,7 +9,7 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { CameraService } from '../cameras.service';
-import { Camera } from '../cameras.model';
+import { AeronaveMatriculaDropdown, Camera, VendedoresDropdown } from '../cameras.model';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from 'environments/environment';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -30,6 +30,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { registerLocaleData } from '@angular/common';
 import { CameraQuery } from 'app/shared/models/cameraQuery.model';
+import { VendedorService } from '../../vendedor/vendedor.service';
+import { AeronaveService } from '../../aeronave/aeronave.service';
 
 @Component({
     selector: 'app-camera-details',
@@ -76,6 +78,8 @@ export class CameraDetailsComponent implements OnInit {
     comissaoVendedor: number = 0;
     totalVendas: number = 0;
     cameraResultado: CameraQuery;
+    vendedores: VendedoresDropdown[];
+    aeronaves: AeronaveMatriculaDropdown[];
 
     pagination = {
             length: 0,
@@ -90,7 +94,7 @@ export class CameraDetailsComponent implements OnInit {
     selectedId: string = null;
 
     productsCount: number = 0;
-    productsTableColumns: string[] = ['data', 'horaVoo', 'nomePassageiro', 'aeronave', 'vendedor', 'valorBruto', 'valorLiquido', 'status', 'actions'];
+    productsTableColumns: string[] = ['data', 'horaVoo', 'nomePassageiro', 'aeronave', 'vendedor', 'valorBruto', 'valorLiquido', 'percentualComissao', 'comissao', 'status', 'actions'];
 
     searchInputControl: FormControl = new FormControl();
 
@@ -99,12 +103,17 @@ export class CameraDetailsComponent implements OnInit {
 
     constructor(
         private _cameraService: CameraService, 
+        private _vendedorService: VendedorService, 
+        private _aeronaveService: AeronaveService, 
         private router: Router,
         private _formBuilder: FormBuilder,
         private _fuseConfirmationService: FuseConfirmationService
     ) {}
     
     ngOnInit(): void {
+        this.carregarVendedores();
+        this.carregarAeroanves();
+
         this.filterForm = this._formBuilder.group({
             vendedor: [''],
             aeronave: [''],
@@ -127,6 +136,28 @@ export class CameraDetailsComponent implements OnInit {
 
         this.load();
         this.loadResultados();
+    }
+
+    carregarVendedores() {
+        this._vendedorService.getAllNomes().subscribe(result => {
+            this.vendedores = result;
+            console.log(this.vendedores);
+        }, error => {
+            console.log(error);
+        }, () => {
+            this.isLoading = false;
+        });
+    }
+
+    carregarAeroanves() {
+        this._aeronaveService.getAllMatriculas().subscribe(result => {
+            this.aeronaves = result;
+            console.log(this.aeronaves);
+        }, error => {
+            console.log(error);
+        }, () => {
+            this.isLoading = false;
+        });
     }
 
     trackByFn(index: number, item: any): any {

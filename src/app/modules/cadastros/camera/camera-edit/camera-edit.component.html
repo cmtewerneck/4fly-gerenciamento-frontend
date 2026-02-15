@@ -74,8 +74,10 @@
                 </select>
                 <mat-error *ngIf="this.mainForm.get('vendedor').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
+        </div>
 
-             <mat-form-field class="flex-1 ml-2">
+        <div class="flex flex-row">
+            <mat-form-field class="flex-1">
                 <mat-label>Valor Bruto (R$)</mat-label>
                 <input matInput formControlName="valorBruto" type="number">
                 <mat-error *ngIf="this.mainForm.get('valorBruto').invalid">Campo obrigatório</mat-error>
@@ -85,6 +87,18 @@
                 <mat-label>Valor Líquido (R$)</mat-label>
                 <input matInput formControlName="valorLiquido" type="number">
                 <mat-error *ngIf="this.mainForm.get('valorLiquido').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Percentual Comissão (%)</mat-label>
+                <input matInput formControlName="percentualComissao" type="number">
+                <mat-error *ngIf="this.mainForm.get('percentualComissao').invalid">Campo obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-1 ml-2">
+                <mat-label>Comissão (R$)</mat-label>
+                <input matInput formControlName="comissao" type="number">
+                <mat-error *ngIf="this.mainForm.get('comissao').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
         </div>
 

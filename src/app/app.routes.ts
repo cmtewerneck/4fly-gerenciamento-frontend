@@ -90,6 +90,7 @@ export const appRoutes: Route[] = [
             {path: 'fornecedoras', loadChildren: () => import('app/modules/cadastros/fornecedora/fornecedora.routes')},
             {path: 'vendedores', loadChildren: () => import('app/modules/cadastros/vendedor/vendedor.routes')},
             {path: 'tarifas', loadChildren: () => import('app/modules/cadastros/tarifas/tarifa.routes')},
+            {path: 'manutencoes', loadChildren: () => import('app/modules/cadastros/manutencoes/manutencao.routes')},
             {path: 'abastecimentos', loadChildren: () => import('app/modules/cadastros/abastecimentos/abastecimento.routes')},
             {path: 'aeronaves', loadChildren: () => import('app/modules/cadastros/aeronave/aeronave.routes')},
             {path: 'colaboradores', loadChildren: () => import('app/modules/cadastros/colaboradores/colaboradores.routes')},

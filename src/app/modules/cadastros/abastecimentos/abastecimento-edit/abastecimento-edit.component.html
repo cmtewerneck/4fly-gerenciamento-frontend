@@ -36,7 +36,7 @@
             </mat-form-field>
     
             <mat-form-field class="flex-1 ml-2">
-                <mat-label>Volume</mat-label>
+                <mat-label>Volume (L)</mat-label>
                 <input matInput formControlName="litros" type="number">
                 <mat-error *ngIf="this.mainForm.get('litros').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
@@ -61,13 +61,13 @@
 
         <div class="flex flex-row">
             <mat-form-field class="flex-1">
-                <mat-label>Valor Unitário</mat-label>
+                <mat-label>Valor Unitário (RS)</mat-label>
                 <input matInput formControlName="valorUnitario" type="number">
                 <mat-error *ngIf="this.mainForm.get('valorUnitario').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
     
             <mat-form-field class="flex-1 ml-2">
-                <mat-label>Valor Total</mat-label>
+                <mat-label>Valor Total (RS)</mat-label>
                 <input matInput formControlName="valorTotal" type="number">
                 <mat-error *ngIf="this.mainForm.get('valorTotal').invalid">Campo obrigatório</mat-error>
             </mat-form-field>

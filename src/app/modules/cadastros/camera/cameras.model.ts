@@ -10,6 +10,8 @@ export interface Camera extends Entity{
     vendedor: string;
     valorBruto: number;
     valorLiquido: number;
+    percentualComissao: number;
+    comissao: number;
     status: string;
     linkYoutube: string;
     linkWeTransfer: string;

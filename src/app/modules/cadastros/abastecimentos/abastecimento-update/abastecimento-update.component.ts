@@ -87,6 +87,21 @@ export class AeronaveAbastecimentoUpdateComponent implements OnInit {
         });
 
         this.loadEntity();
+
+        this.mainForm.valueChanges.subscribe(values => {
+            this.calcular(values);
+        });
+    }
+
+    calcular(values: any) {
+        const c1 = parseFloat(values.litros) || 0;
+        const c2 = parseFloat(values.valorUnitario) || 0;
+        const total = c1 * c2;
+
+        // 3. Popular o terceiro campo (patchValue para não disparar eventos infinitos)
+        this.mainForm.patchValue({
+        valorTotal: total
+        }, { emitEvent: false }); // emitEvent: false é crucial para evitar loop
     }
 
     carregarFornecedoras() {

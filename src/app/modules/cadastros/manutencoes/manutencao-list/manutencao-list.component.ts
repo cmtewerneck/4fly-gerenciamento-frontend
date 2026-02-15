@@ -9,8 +9,8 @@ import { OrderDirectionEnum } from 'app/shared/enums/orderDirection.enum';
 import { FilterInfo } from 'app/shared/models/filterInfo.model';
 import { QueryInfo } from 'app/shared/models/queryInfo.model';
 import { MatDialog } from '@angular/material/dialog';
-import { AeronaveTarifa } from '../manutencao.model';
-import { AeronaveTarifaService } from '../manutencao.service';
+import { AeronaveManutencao } from '../manutencao.model';
+import { AeronaveManutencaoService } from '../manutencao.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,12 +29,12 @@ import { CommonModule } from '@angular/common';
 import { UppercasePipe } from 'app/shared/pipes/uppercase.pipe';
 import { OperacionalPipe } from 'app/shared/pipes/operacional.pipe';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { TarifaQuery } from 'app/shared/models/tarifaQuery.model';
+import { ManutencaoQuery } from 'app/shared/models/manutencaoQuery.model';
 
 @Component({
-    selector: 'app-tarifa-list',
-    templateUrl: './tarifa-list.component.html',
-    styleUrls: ['./tarifa-list.component.scss'],
+    selector: 'app-manutencao-list',
+    templateUrl: './manutencao-list.component.html',
+    styleUrls: ['./manutencao-list.component.scss'],
     encapsulation: ViewEncapsulation.None,
     imports:[
         MatButtonModule,
@@ -62,12 +62,12 @@ import { TarifaQuery } from 'app/shared/models/tarifaQuery.model';
     ]
 })
 
-export class AeronaveTarifaListComponent implements OnInit, OnDestroy {
+export class AeronaveManutencaoListComponent implements OnInit, OnDestroy {
 
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
-    tarifas: AeronaveTarifa[] = [];
+    manutencoes: AeronaveManutencao[] = [];
     aeronaveId: string;
 
     pagination = {
@@ -77,11 +77,11 @@ export class AeronaveTarifaListComponent implements OnInit, OnDestroy {
     };
 
     private query = new QueryInfo();
-    private resultado = new TarifaQuery();
+    private resultado = new ManutencaoQuery();
 
     isLoading: boolean = false;
     productsCount: number = 0;
-    productsTableColumns: string[] = ['data', 'matricula', 'origem', 'valor', 'status', 'dataPagamento', 'nota', 'codigoBarras', 'vencimento', 'actions'];
+    productsTableColumns: string[] = ['data', 'matricula', 'descricao', 'valor', 'status', 'dataPagamento', 'nota', 'codigoBarras', 'realizadoPor', 'vencimento', 'actions'];
 
     searchInputControl: FormControl = new FormControl();
 
@@ -91,12 +91,12 @@ export class AeronaveTarifaListComponent implements OnInit, OnDestroy {
     filtersExpanded = false;
     filterForm: FormGroup;
 
-    origem: string = "";
+    realizadoPor: string = "";
     status: string = "";
     valor: number = 0;
 
     constructor(
-        private _aeronaveTarifaService: AeronaveTarifaService,
+        private _aeronaveManutencaoService: AeronaveManutencaoService,
         private _formBuilder: FormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         public dialog: MatDialog,
@@ -107,7 +107,7 @@ export class AeronaveTarifaListComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.filterForm = this._formBuilder.group({
             status: [''],
-            origem: [''],
+            realizadoPor: [''],
             dataInicio: [null],
             dataTermino: [null]
         });
@@ -120,7 +120,7 @@ export class AeronaveTarifaListComponent implements OnInit, OnDestroy {
         this.query.pageNumber = 1;
         this.query.pageSize = 25;
 
-        this.resultado.origem = "";
+        this.resultado.realizadoPor = "";
         this.resultado.status = "";
         this.resultado.dataInicio = null;
         this.resultado.dataTermino = null;
@@ -155,8 +155,8 @@ export class AeronaveTarifaListComponent implements OnInit, OnDestroy {
 
     load() {
         this.isLoading = true;
-        this._aeronaveTarifaService.listById(this.query, this.aeronaveId).subscribe(result => {
-            this.tarifas = result.data;
+        this._aeronaveManutencaoService.listById(this.query, this.aeronaveId).subscribe(result => {
+            this.manutencoes = result.data;
             this.pagination.length = result.totalRecords;
         }, error => {
             console.log(error);
@@ -167,8 +167,8 @@ export class AeronaveTarifaListComponent implements OnInit, OnDestroy {
 
     loadResultados() {
         this.isLoading = true;
-        this._aeronaveTarifaService.getResultados(this.resultado).subscribe(result => {
-            this.origem = result.origem;
+        this._aeronaveManutencaoService.getResultados(this.resultado).subscribe(result => {
+            this.realizadoPor = result.realizadoPor;
             this.status = result.status;
             this.valor = result.valor;
         }, error => {
@@ -191,18 +191,18 @@ export class AeronaveTarifaListComponent implements OnInit, OnDestroy {
     details(id: string) {
         this.selectedId = id;
 
-        this.router.navigate(['/tarifas/details/' + this.selectedId]);
+        this.router.navigate(['/manutencoes/details/' + this.selectedId]);
     }
 
     edit(id: string) {
         this.selectedId = id;
 
-        this.router.navigate(['/tarifas/atualizar/' + this.selectedId]);
+        this.router.navigate(['/manutencoes/atualizar/' + this.selectedId]);
     }
 
     delete(id: string) {
         this.isLoading = true;
-        this._aeronaveTarifaService.delete(id).subscribe(_ => {
+        this._aeronaveManutencaoService.delete(id).subscribe(_ => {
             console.log("Exclusão com sucesso");
             this.load();
         }, error => {
@@ -215,9 +215,9 @@ export class AeronaveTarifaListComponent implements OnInit, OnDestroy {
     deletar(id: string) {
         // Open the confirmation dialog
         const confirmation = this._fuseConfirmationService.open({
-            title: 'Deletar Tarifa',
+            title: 'Deletar Manutenção',
             message:
-                'Tem certeza que deseja deletar a tarifa? Não será possível desfazer.',
+                'Tem certeza que deseja deletar a manutenção? Não será possível desfazer.',
             actions: {
                 confirm: {
                     label: 'Deletar',
@@ -232,7 +232,7 @@ export class AeronaveTarifaListComponent implements OnInit, OnDestroy {
         confirmation.afterClosed().subscribe((result) => {
             // If the confirm button pressed...
             if (result === 'confirmed') {
-                const $obs = this._aeronaveTarifaService.updateDeleting(id);
+                const $obs = this._aeronaveManutencaoService.updateDeleting(id);
 
                 this.isLoading = true;
                 $obs.subscribe(_ => {
@@ -260,8 +260,8 @@ export class AeronaveTarifaListComponent implements OnInit, OnDestroy {
             this.query.filters.push(new FilterInfo('status', FieldTypeEnum.String, FilterOperatorEnum.Contains, filter.status.trim()));
         }
 
-        if (filter.origem?.trim()) {
-            this.query.filters.push(new FilterInfo('origem', FieldTypeEnum.String, FilterOperatorEnum.Contains, filter.origem.trim()));
+        if (filter.realizadoPor?.trim()) {
+            this.query.filters.push(new FilterInfo('realizadoPor', FieldTypeEnum.String, FilterOperatorEnum.Contains, filter.realizadoPor.trim()));
         }
 
         if (filter.dataInicio?.trim()) {
@@ -288,6 +288,6 @@ export class AeronaveTarifaListComponent implements OnInit, OnDestroy {
     }
 
     novo(){
-         this.router.navigate(['/tarifas/' + this.aeronaveId + '/novo']);
+         this.router.navigate(['/manutencoes/' + this.aeronaveId + '/novo']);
     }
 }

@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
-import { AeronaveTarifaListComponent } from './tarifa-list/tarifa-list.component';
-import { AeronaveTarifaEditComponent } from './tarifa-edit/tarifa-edit.component';
-import { AeronaveTarifaUpdateComponent } from './tarifa-update/tarifa-update.component';
+import { AeronaveManutencaoListComponent } from './manutencao-list/manutencao-list.component';
+import { AeronaveManutencaoEditComponent } from './manutencao-edit/manutencao-edit.component';
+import { AeronaveManutencaoUpdateComponent } from './manutencao-update/manutencao-update.component';
 // import { AeronaveEditComponent } from './aeronave-edit/aeronave-edit.component';
 // import { AeronaveUpdateComponent } from './aeronave-update/aeronave-update.component';
 // import { AeronaveDetailsComponent } from './aeronave-details/aeronave-details.component';
 
 export default [
-    { path: ':id', component: AeronaveTarifaListComponent},
-    { path: ':id/novo', component: AeronaveTarifaEditComponent},
-    { path: 'atualizar/:id', component: AeronaveTarifaUpdateComponent}
+    { path: ':id', component: AeronaveManutencaoListComponent},
+    { path: ':id/novo', component: AeronaveManutencaoEditComponent},
+    { path: 'atualizar/:id', component: AeronaveManutencaoUpdateComponent}
     // { path: 'details/:id', component: AeronaveDetailsComponent}
 ] as Routes;

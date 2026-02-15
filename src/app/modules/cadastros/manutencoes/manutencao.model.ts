@@ -1,6 +1,6 @@
 import { Entity } from "app/shared/models/entity.model";
 
-export interface AeronaveTarifa extends Entity{
+export interface AeronaveManutencao extends Entity{
     data: Date;
     origem: string;
     valor: number;
@@ -17,8 +17,8 @@ export interface AeronaveDropdown{
     id: string;
 }
 
-export interface TarifaResultado{
-    origem: string;
+export interface ManutencaoResultado{
+    realizadoPor: string;
     status: string;
     valor: number;
 }
