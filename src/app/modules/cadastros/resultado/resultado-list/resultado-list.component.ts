@@ -166,7 +166,7 @@ export class AeronaveResultadoListComponent implements OnInit, OnDestroy {
             this.socios = result;
 
             if(this.socios.length == 1){
-                this._aeronaveVooService.sociosDevidos(this.socios[0].nome).subscribe(result => {
+                this._aeronaveVooService.sociosDevidos(this.socios[0].nome, this.aeronaveId).subscribe(result => {
                     this.valorDevidoSocio1 = result;
                 }, error => {
                     console.log(error);
@@ -174,13 +174,13 @@ export class AeronaveResultadoListComponent implements OnInit, OnDestroy {
             }
 
             if(this.socios.length == 2){
-                this._aeronaveVooService.sociosDevidos(this.socios[0].nome).subscribe(result => {
+                this._aeronaveVooService.sociosDevidos(this.socios[0].nome, this.aeronaveId).subscribe(result => {
                     this.valorDevidoSocio1 = result;
                 }, error => {
                     console.log(error);
                 }, () => {});
 
-                this._aeronaveVooService.sociosDevidos(this.socios[1].nome).subscribe(result => {
+                this._aeronaveVooService.sociosDevidos(this.socios[1].nome, this.aeronaveId).subscribe(result => {
                     this.valorDevidoSocio2 = result;
                 }, error => {
                     console.log(error);

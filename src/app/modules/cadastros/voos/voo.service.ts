@@ -21,7 +21,7 @@ export class AeronaveVooService extends BaseApiService<AeronaveVoo>
         return this.api.post(`${this.path}/listByAeronaveId/` + aeronaveId, query, {});
     }
 
-    sociosDevidos(socioNome: string): Observable<number> {
-        return this.api.get(`${this.path}/listSocioDevidos/` + socioNome);
+    sociosDevidos(socioNome: string, aeronaveId: string): Observable<number> {
+        return this.api.get(`${this.path}/listSocioDevidos/` + socioNome + '/' + aeronaveId);
     }
 }

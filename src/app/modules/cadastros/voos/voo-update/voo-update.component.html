@@ -34,10 +34,18 @@
                 <input matInput formControlName="data" type="date">
                 <mat-error *ngIf="this.mainForm.get('data').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
-    
+
             <mat-form-field class="flex-1 ml-2">
                 <mat-label>Descrição</mat-label>
-                <input matInput formControlName="descricao">
+                <select matNativeControl required formControlName="descricao">
+                    <option value="Doorsoff"> Doorsoff</option>
+                    <option value="Panoramico 15min"> Panoramico 15min</option>
+                    <option value="Panoramico 20min"> Panoramico 20min</option>
+                    <option value="Panoramico 30min"> Panoramico 30min</option>
+                    <option value="Panoramico 45min"> Panoramico 45min</option>
+                    <option value="Panoramico 60min"> Panoramico 60min</option>
+                    <option value="Translado"> Translado</option>
+                </select>
                 <mat-error *ngIf="this.mainForm.get('descricao').invalid">Campo obrigatório</mat-error>
             </mat-form-field>
         </div>
@@ -65,7 +73,11 @@
         <div class="flex flex-row">
             <mat-form-field class="flex-1">
                 <mat-label>Empresa</mat-label>
-                <input matInput formControlName="empresa">
+                <select matNativeControl required formControlName="empresa">
+                    <option value="4FLY RJ"> 4FLY RJ</option>
+                    <option value="Diogo"> Diogo</option>
+                    <option value="Gonzalez"> Gonzalez</option>
+                </select>
             </mat-form-field>
     
              <mat-form-field class="flex-1 ml-2">
@@ -83,12 +95,18 @@
 
             <mat-form-field class="flex-1 ml-2">
                 <mat-label>Status Voo</mat-label>
-                <input matInput formControlName="statusPgtoVoo">
+                <select matNativeControl required formControlName="statusPgtoVoo">
+                    <option value="pendente"> Pendente</option>
+                    <option value="pago"> Pago</option>
+                </select>
             </mat-form-field>
 
             <mat-form-field class="flex-1 ml-2">
                 <mat-label>Status Piloto</mat-label>
-                <input matInput formControlName="statusPgtoPiloto">
+                <select matNativeControl formControlName="statusPgtoPiloto">
+                    <option value="pendente"> Pendente</option>
+                    <option value="pago"> Pago</option>
+                </select>
             </mat-form-field>
         </div>
 
