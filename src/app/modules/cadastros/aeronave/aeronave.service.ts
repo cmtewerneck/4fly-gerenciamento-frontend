@@ -18,4 +18,8 @@ export class AeronaveService extends BaseApiService<Aeronave>
     getAllMatriculas(): Observable<AeronaveMatriculaDropdown[]> {
         return this.api.get(this.path);
     }
+
+    getCaixa(aeronaveId: string): Observable<number> {
+        return this.api.get(`${this.path}/getCaixa/` + aeronaveId);
+    }
 }

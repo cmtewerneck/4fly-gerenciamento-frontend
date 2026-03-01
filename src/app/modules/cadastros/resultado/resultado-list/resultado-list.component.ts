@@ -34,6 +34,7 @@ import { AeronaveSocio, AeronaveSocioResultado } from '../../socios/socio.model'
 import { AeronaveSocioService } from '../../socios/socio.service';
 import { AeronaveVooService } from '../../voos/voo.service';
 import { AeronaveOutrasDespesasService } from '../../outrasDespesas/outrasDespesas.service';
+import { AeronaveService } from '../../aeronave/aeronave.service';
 
 @Component({
     selector: 'app-resultado-list',
@@ -107,6 +108,7 @@ export class AeronaveResultadoListComponent implements OnInit, OnDestroy {
         private _aeronaveOutrasDespesasService: AeronaveOutrasDespesasService,
         private _aeronaveSocioService: AeronaveSocioService,
         private _aeronaveVooService: AeronaveVooService,
+        private _aeronaveService: AeronaveService,
         private _formBuilder: FormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         public dialog: MatDialog,
@@ -128,6 +130,7 @@ export class AeronaveResultadoListComponent implements OnInit, OnDestroy {
         this.query.pageNumber = 1;
         this.query.pageSize = 25;
 
+        this.obterCaixa();
         this.obterSocio();
         this.retiradaSocios();
         this.retiradaOverhall();
@@ -147,7 +150,6 @@ export class AeronaveResultadoListComponent implements OnInit, OnDestroy {
             this.resultado = result;
 
             this.resultadoFinal = result.custoVoosTotal - (result.abastecimentosTotal + result.frellancerTotal + result.manutencoesTotal + result.outrasDespesasTotal + result.overhallTotal + result.tarifasTotal);
-            this.caixa = 36102;
             this.valorCaixaAntesRetirada = this.caixa + result.custoVoosTotal - (result.abastecimentosTotal + result.frellancerTotal + result.manutencoesTotal + result.outrasDespesasTotal + result.tarifasTotal);
             this.valorCaixaDepoisRetirada = this.caixa + result.custoVoosTotal - (result.abastecimentosTotal + result.frellancerTotal + result.manutencoesTotal + result.outrasDespesasTotal + result.tarifasTotal);
             
@@ -187,6 +189,17 @@ export class AeronaveResultadoListComponent implements OnInit, OnDestroy {
                 }, () => {});
             }
 
+        }, error => {
+            console.log(error);
+        }, () => {
+            this.isLoading = false;
+        });
+    }
+
+    obterCaixa() {
+        this.isLoading = true;
+        this._aeronaveService.getCaixa(this.aeronaveId).subscribe(result => {
+            this.caixa = result;
         }, error => {
             console.log(error);
         }, () => {
