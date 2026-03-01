@@ -5,6 +5,7 @@ export interface Aeronave extends Entity{
     fabricante: string;
     modelo: string;
     numeroSerie: string;
+    caixa: number;
     ano?: number;
     capacidade?: number;
     situacao: boolean;

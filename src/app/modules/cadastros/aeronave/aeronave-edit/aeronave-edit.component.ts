@@ -85,6 +85,7 @@ export class AeronaveEditComponent implements OnInit {
             fabricante: ['', [Validators.required]],
             modelo: ['', [Validators.required]],
             numeroSerie: [''],
+            caixa: [0],
             ano: [''],
             capacidade: [''],
             situacao: ['', [Validators.required]],
