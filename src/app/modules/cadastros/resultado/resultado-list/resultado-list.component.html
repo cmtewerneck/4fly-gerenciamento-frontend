@@ -1,0 +1,118 @@
+<div class="flex min-w-0 flex-auto flex-col">
+    <!-- Header -->
+    <div class="bg-card">
+        <div class="mx-auto flex w-full max-w-screen-xl flex-col px-6 sm:px-8">
+            <div class="my-8 flex min-w-0 flex-auto flex-col sm:my-12 sm:flex-row sm:items-center">
+                <div class="flex min-w-0 flex-auto items-center">
+                    <div class="text-4xl font-extrabold tracking-tight">Resultado</div>
+                </div>
+                <div class="mt-6 flex items-center space-x-3 sm:ml-2 sm:mt-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="-mt-px flex-auto border-t pt-4 sm:pt-6 pb-8">
+        <div class="mx-auto w-full max-w-screen-xl mt-6">
+            <button class="mb-4" mat-stroked-button (click)="voltar()">
+                <mat-icon [svgIcon]="'heroicons_outline:arrow-left'"></mat-icon>
+                <span class="ml-2 mr-1">Voltar</span>
+            </button>
+            <div class="grid w-full">
+                <table style="text-align: center;">
+                    <tbody>
+                        <tr style="background-color: rgb(141, 211, 248);">
+                            <td style="font-size: 14px; font-weight: bold;">Valor em caixa</td>
+                            <td style="font-size: 14px; font-weight: bold;">R$ {{this.caixa | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Total de voos</td>
+                            <td>{{this.resultado.voosTotal }}</td>
+                        </tr>
+                        <tr>
+                            <td>Receita de voos</td>
+                            <td>R$ {{this.resultado.custoVoosTotal | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Abastecimentos</td>
+                            <td>(R$ {{this.resultado.abastecimentosTotal | number:'1.2-2'}})</td>
+                        </tr>
+                        <tr>
+                            <td>Tarifas</td>
+                            <td>(R$ {{this.resultado.tarifasTotal | number:'1.2-2'}})</td>
+                        </tr>
+                        <tr>
+                            <td>Freelancers</td>
+                            <td>(R$ {{this.resultado.frellancerTotal | number:'1.2-2'}})</td>
+                        </tr>
+                        <tr>
+                            <td>Manutenções</td>
+                            <td>(R$ {{this.resultado.manutencoesTotal | number:'1.2-2'}})</td>
+                        </tr>
+                        <tr>
+                            <td>Overhall</td>
+                            <td>(R$ {{this.resultado.overhallTotal | number:'1.2-2'}})</td>
+                        </tr>
+                        <tr>
+                            <td>Outras Despesas</td>
+                            <td>(R$ {{this.resultado.outrasDespesasTotal | number:'1.2-2'}})</td>
+                        </tr>
+                        <tr style="background-color: rgb(134, 244, 134);">
+                            <td style="font-weight: bold;">Resultado Final</td>
+                            <td style="font-weight: bold;">R$ {{this.resultadoFinal | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">PARTE DOS SÓCIOS</td>
+                            <td style="font-weight: bold;">Implementar</td>
+                        </tr>
+                        <tr style="background-color: rgb(134, 244, 134);">
+                            <td style="font-weight: bold;">Valor em caixa (antes da retirada dos sócios)</td>
+                            <td style="font-weight: bold;">R$ {{this.valorCaixaAntesRetirada | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr style="background-color: rgb(251, 164, 170);">
+                            <td style="font-weight: bold;">Retirada (sócios)</td>
+                            <td style="font-weight: bold;">Implementar</td>
+                        </tr>
+                        <tr style="background-color: rgb(251, 164, 170);">
+                            <td style="font-weight: bold;">Retirada (overhall)</td>
+                            <td style="font-weight: bold;">Implementar</td>
+                        </tr>
+                        <tr style="background-color: rgb(134, 244, 134);">
+                            <td style="font-weight: bold;">Valor em caixa (depois das retiradas)</td>
+                            <td style="font-weight: bold;">R$ {{this.valorCaixaDepoisRetirada | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Voos a receber</td>
+                            <td>R$ {{this.resultado.voosPagar | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Abastecimentos a pagar</td>
+                            <td>R$ {{this.resultado.abastecimentosPagar | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Tarifas a pagar</td>
+                            <td>R$ {{this.resultado.tarifasPagar | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Freelancers a pagar</td>
+                            <td>R$ {{this.resultado.freelancersPagar | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Manutenções a pagar</td>
+                            <td>R$ {{this.resultado.manutencoesPagar | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Outras despesas a pagar</td>
+                            <td>R$ {{this.resultado.outrasDespesasPagar | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr style="background-color: rgb(134, 244, 134);">
+                            <td style="font-size: 20px; font-weight: bold;">Valor em conta</td>
+                            <td style="font-size: 20px; font-weight: bold;">R$ {{this.valorEmConta | number:'1.2-2'}}</td>
+                        </tr>
+                    </tbody>
+                    </table>
+            </div>            
+        </div>
+    </div>
+</div>

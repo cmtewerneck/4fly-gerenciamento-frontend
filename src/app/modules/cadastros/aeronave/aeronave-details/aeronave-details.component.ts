@@ -14,6 +14,8 @@ import { AeronaveService } from '../aeronave.service';
 import { Aeronave } from '../aeronave.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'environments/environment';
+import { FormGroup } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
     selector: 'app-aeronave-details',
@@ -35,6 +37,7 @@ import { environment } from 'environments/environment';
     ],
 })
 export class AeronaveDetailsComponent implements OnInit {
+    @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild('recentTransactionsTable', { read: MatSort })
     recentTransactionsTableMatSort: MatSort;
     aeronave: Aeronave;
@@ -43,6 +46,16 @@ export class AeronaveDetailsComponent implements OnInit {
     matriculaParte1: string;
     matriculaParte2: string;
     imagens: string = environment.imagensUrl; 
+    voos: any[] = [];
+
+    pagination = {
+        length: 0,
+        page: 0,
+        size: 25
+    };
+
+    filtersExpanded = false;
+    filterForm: FormGroup;
     
     constructor(private _aeronaveService: AeronaveService, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {
         this.aeronaveId = this.route.snapshot.paramMap.get('id');
@@ -79,12 +92,28 @@ export class AeronaveDetailsComponent implements OnInit {
     abastecimentos() {
         this.router.navigate(['/abastecimentos/' + this.aeronaveId]);
     }
+
+    aeronaveVoos() {
+        this.router.navigate(['/voos/' + this.aeronaveId]);
+    }
+
+    aeronaveOutrasDespesas() {
+        this.router.navigate(['/outrasDespesas/' + this.aeronaveId]);
+    }
     
     tarifas() {
         this.router.navigate(['/tarifas/' + this.aeronaveId]);
     }
 
-     manutencoes() {
+    manutencoes() {
         this.router.navigate(['/manutencoes/' + this.aeronaveId]);
+    }
+
+    socios() {
+        this.router.navigate(['/socios/' + this.aeronaveId]);
+    }
+
+    resultado() {
+        this.router.navigate(['/resultado/' + this.aeronaveId]);
     }
 }
