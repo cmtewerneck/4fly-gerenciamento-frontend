@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BaseApi } from "app/shared/services/baseApi";
 import { BaseApiService } from "app/shared/services/baseApiService";
-import { AeronaveSocio } from "./socio.model";
+import { AeronaveSocio, AeronaveSocioResultado } from "./socio.model";
 import { QueryInfo } from "app/shared/models/queryInfo.model";
 import { Observable } from "rxjs";
 import { PagedResult } from "app/shared/models/pagedResult.model";
@@ -19,5 +19,9 @@ export class AeronaveSocioService extends BaseApiService<AeronaveSocio>
 
     listById(query: QueryInfo, aeronaveId: string): Observable<PagedResult<AeronaveSocio>> {
         return this.api.post(`${this.path}/listByAeronaveId/` + aeronaveId, query, {});
+    }
+
+    listByAeronaveId(aeronaveId: string): Observable<AeronaveSocioResultado[]> {
+        return this.api.get(`${this.path}/listSociosByAeronaveId/` + aeronaveId);
     }
 }

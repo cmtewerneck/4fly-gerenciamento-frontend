@@ -20,4 +20,8 @@ export class AeronaveVooService extends BaseApiService<AeronaveVoo>
     listById(query: QueryInfo, aeronaveId: string): Observable<PagedResult<AeronaveVoo>> {
         return this.api.post(`${this.path}/listByAeronaveId/` + aeronaveId, query, {});
     }
+
+    sociosDevidos(socioNome: string): Observable<number> {
+        return this.api.get(`${this.path}/listSocioDevidos/` + socioNome);
+    }
 }

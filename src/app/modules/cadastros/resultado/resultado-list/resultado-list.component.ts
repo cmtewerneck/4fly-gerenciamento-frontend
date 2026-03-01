@@ -30,6 +30,10 @@ import { UppercasePipe } from 'app/shared/pipes/uppercase.pipe';
 import { OperacionalPipe } from 'app/shared/pipes/operacional.pipe';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ManutencaoQuery } from 'app/shared/models/manutencaoQuery.model';
+import { AeronaveSocio, AeronaveSocioResultado } from '../../socios/socio.model';
+import { AeronaveSocioService } from '../../socios/socio.service';
+import { AeronaveVooService } from '../../voos/voo.service';
+import { AeronaveOutrasDespesasService } from '../../outrasDespesas/outrasDespesas.service';
 
 @Component({
     selector: 'app-resultado-list',
@@ -89,11 +93,20 @@ export class AeronaveResultadoListComponent implements OnInit, OnDestroy {
     filtersExpanded = false;
     filterForm: FormGroup;
 
+    socios: AeronaveSocioResultado[] = [];
+    valorDevidoSocio1: any;
+    valorDevidoSocio2: any;
+    retiradaSociosDespesa: any;
+    retiradaOverhallDespesa: any;
+
     dataInicio = "2000-02-25T14:30:00";
     dataTermino = "2028-02-25T14:30:00";
 
     constructor(
         private _aeronaveResultadoService: AeronaveResultadoService,
+        private _aeronaveOutrasDespesasService: AeronaveOutrasDespesasService,
+        private _aeronaveSocioService: AeronaveSocioService,
+        private _aeronaveVooService: AeronaveVooService,
         private _formBuilder: FormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         public dialog: MatDialog,
@@ -115,6 +128,9 @@ export class AeronaveResultadoListComponent implements OnInit, OnDestroy {
         this.query.pageNumber = 1;
         this.query.pageSize = 25;
 
+        this.obterSocio();
+        this.retiradaSocios();
+        this.retiradaOverhall();
         this.load();
     }
 
@@ -131,7 +147,7 @@ export class AeronaveResultadoListComponent implements OnInit, OnDestroy {
             this.resultado = result;
 
             this.resultadoFinal = result.custoVoosTotal - (result.abastecimentosTotal + result.frellancerTotal + result.manutencoesTotal + result.outrasDespesasTotal + result.overhallTotal + result.tarifasTotal);
-            this.caixa = 0;
+            this.caixa = 36102;
             this.valorCaixaAntesRetirada = this.caixa + result.custoVoosTotal - (result.abastecimentosTotal + result.frellancerTotal + result.manutencoesTotal + result.outrasDespesasTotal + result.tarifasTotal);
             this.valorCaixaDepoisRetirada = this.caixa + result.custoVoosTotal - (result.abastecimentosTotal + result.frellancerTotal + result.manutencoesTotal + result.outrasDespesasTotal + result.tarifasTotal);
             
@@ -144,6 +160,62 @@ export class AeronaveResultadoListComponent implements OnInit, OnDestroy {
         });
     }
 
+    obterSocio() {
+        this.isLoading = true;
+        this._aeronaveSocioService.listByAeronaveId(this.aeronaveId).subscribe(result => {
+            this.socios = result;
+
+            if(this.socios.length == 1){
+                this._aeronaveVooService.sociosDevidos(this.socios[0].nome).subscribe(result => {
+                    this.valorDevidoSocio1 = result;
+                }, error => {
+                    console.log(error);
+                }, () => {});
+            }
+
+            if(this.socios.length == 2){
+                this._aeronaveVooService.sociosDevidos(this.socios[0].nome).subscribe(result => {
+                    this.valorDevidoSocio1 = result;
+                }, error => {
+                    console.log(error);
+                }, () => {});
+
+                this._aeronaveVooService.sociosDevidos(this.socios[1].nome).subscribe(result => {
+                    this.valorDevidoSocio2 = result;
+                }, error => {
+                    console.log(error);
+                }, () => {});
+            }
+
+        }, error => {
+            console.log(error);
+        }, () => {
+            this.isLoading = false;
+        });
+    }
+
+    retiradaSocios() {
+        this.isLoading = true;
+        this._aeronaveOutrasDespesasService.retiradaSocios(this.aeronaveId, this.dataInicio, this.dataTermino).subscribe(result => {
+            this.retiradaSociosDespesa = result;
+        }, error => {
+            console.log(error);
+        }, () => {
+            this.isLoading = false;
+        });
+    }
+
+    retiradaOverhall() {
+        this.isLoading = true;
+        this._aeronaveOutrasDespesasService.retiradaOverhall(this.aeronaveId, this.dataInicio, this.dataTermino).subscribe(result => {
+            this.retiradaOverhallDespesa = result;
+        }, error => {
+            console.log(error);
+        }, () => {
+            this.isLoading = false;
+        });
+    }
+    
     onFilterExpanded() {
         this.filtersExpanded = !this.filtersExpanded;
     }

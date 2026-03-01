@@ -25,4 +25,12 @@ export class AeronaveOutrasDespesasService extends BaseApiService<AeronaveOutras
     getResultados(entity: OutrasDespesasQuery): Observable<OutrasDespesasResultado> {
         return this.api.post(`${this.path}/resultados`, entity, {});
     }
+
+    retiradaSocios(aeronaveId: string, dataInicio: string, dataTermino: string): Observable<number> {
+        return this.api.get(`${this.path}/retiradaSocios/` + aeronaveId + '/' + dataInicio + '/' + dataTermino);
+    }
+
+    retiradaOverhall(aeronaveId: string, dataInicio: string, dataTermino: string): Observable<number> {
+        return this.api.get(`${this.path}/retiradaOverhall/` + aeronaveId + '/' + dataInicio + '/' + dataTermino);
+    }
 }

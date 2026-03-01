@@ -10,3 +10,9 @@ export interface AeronaveDropdown{
     matricula: string;
     id: string;
 }
+
+export interface AeronaveSocioResultado{
+    nome: string;
+    percentual: number;
+    id: string;
+}
